@@ -1,9 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tmdt_app/controllers/auth_controller.dart';
 import 'package:tmdt_app/views/screens/authentication_screens/login_screens.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  final AuthController _authController = AuthController();
+
+  late String email;
+
+  late String password;
+
+  late String fullName;
+
+  registerUser() async {
+    String res = await _authController.registerNewUser(email, fullName, password);
+    if (res == 'success') {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoginScreen(),
+        ),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Đăng ký thành công!")),
+      );
+
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Đăng ký không thành công. Vui lòng thử lại!")),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +91,7 @@ class RegisterScreen extends StatelessWidget {
                       
                       
                   TextFormField(
+                    onChanged: (value) => email = value,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Please enter your email";
@@ -106,6 +142,7 @@ class RegisterScreen extends StatelessWidget {
                   ),
                       
                   TextFormField(
+                    onChanged: (value) => fullName = value,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Please enter your full name";
@@ -155,6 +192,7 @@ class RegisterScreen extends StatelessWidget {
                   ),
               
                   TextFormField(
+                    onChanged: (value) => password = value,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Please enter your full name";
@@ -196,7 +234,7 @@ class RegisterScreen extends StatelessWidget {
                   InkWell(
                     onTap: () {
                       if (_formKey.currentState!.validate()) {
-                        print('correct');
+                        registerUser();
                       }  
                       else {
                         print('failed');

@@ -1,9 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tmdt_app/controllers/auth_controller.dart';
 import 'package:tmdt_app/views/screens/authentication_screens/register_screen.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final AuthController _authController = AuthController();
+
+  late String email;
+
+  late String password;
+
+  loginUser() async{
+    String res = await _authController.loginUser(email, password);
+    if (res == 'success') {
+      print("Logged in");
+    } else {
+      print('Login failed');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +76,9 @@ class LoginScreen extends StatelessWidget {
                       
                       
                   TextFormField(
+                    onChanged: (value) {
+                      email = value;
+                    },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Please enter your email";
@@ -105,6 +128,9 @@ class LoginScreen extends StatelessWidget {
                   ),
               
                   TextFormField(
+                    onChanged: (value) {
+                      password = value;
+                    },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Please enter your password";
@@ -146,7 +172,7 @@ class LoginScreen extends StatelessWidget {
                   InkWell(
                     onTap: () {
                       if (_formKey.currentState!.validate()) {
-                        print('pass');
+                        loginUser();
                       } else {
                         print('failed');
                       }
