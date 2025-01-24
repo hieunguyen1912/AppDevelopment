@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tmdt_app/controllers/auth_controller.dart';
 import 'package:tmdt_app/views/screens/authentication_screens/register_screen.dart';
+import 'package:tmdt_app/views/screens/main_screens.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -19,6 +20,14 @@ class _LoginScreenState extends State<LoginScreen> {
   loginUser() async{
     String res = await _authController.loginUser(email, password);
     if (res == 'success') {
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return MainScreen();
+      }));
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: const Text("Đăng nhập thành công!")),
+      );  
+
       print("Logged in");
     } else {
       print('Login failed');
@@ -35,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Form(
             key: _formKey,
             child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -181,10 +190,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: 310,
                       height: 50,
                       decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 14, 14, 172),
+                        color: const Color.fromARGB(255, 14, 14, 172),
                         borderRadius: BorderRadius.circular(9),
                       ),
-                      child: Center(
+                      child: const Center(
                         child: Text(
                           "Sign In",
                           style: TextStyle(
@@ -224,7 +233,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               "Nunito Sans",
                               fontSize: 14,
                               letterSpacing: 0.1,
-                              color: Color.fromARGB(255, 14, 14, 172),
+                              color: const Color.fromARGB(255, 14, 14, 172),
                             ),
                           ),
                         ),
