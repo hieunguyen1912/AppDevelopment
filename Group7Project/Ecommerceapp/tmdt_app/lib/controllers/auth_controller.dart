@@ -26,7 +26,7 @@ class AuthController {
       res = 'success';
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        res = 'Mật Khẩu Yếu';
+        res = 'Mật Khẩu quá yếu.';
       } else if (e.code == 'email-already-in-use') {
         res = 'Email đã được sử dụng.';
       }
@@ -47,7 +47,7 @@ class AuthController {
       if (e.code == 'user-not-found') {
         res = 'Email không tồn tại.';
       } else if (e.code == 'wrong-password') {
-        res = 'Mật Khẩu không đúng.';
+        res = 'Mật Khẩu không đúng, vui lòng thử lại.';
       }
     } catch (e) {
       // Handle errors here
