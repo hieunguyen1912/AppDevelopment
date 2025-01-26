@@ -1,10 +1,15 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tmdt_app/views/screens/authentication_screens/login_screens.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:tmdt_app/views/screens/authentication_screens/register_screen.dart';
+import 'package:tmdt_app/views/screens/main_screens.dart';
 import 'firebase_options.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -16,13 +21,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'E-Commerce App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoginScreen(),
+      home: MainScreen(),
     );
   }
 }

@@ -5,6 +5,8 @@ import 'package:tmdt_app/views/screens/authentication_screens/register_screen.da
 import 'package:tmdt_app/views/screens/main_screens.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -17,16 +19,20 @@ class _LoginScreenState extends State<LoginScreen> {
 
   late String password;
 
-  loginUser() async{
+  bool isLoading = false;
+  bool _isObsure = true;
+
+  loginUser() async {
     String res = await _authController.loginUser(email, password);
     if (res == 'success') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return MainScreen();
-      }));
+      Future.delayed(Duration.zero, () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return MainScreen();
+        }));
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: const Text("Đăng nhập thành công!")),
-      );  
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('Logged in')));
+      });
 
       print("Logged in");
     } else {
@@ -52,16 +58,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     "Login Your Account",
                     style: GoogleFonts.getFont(
                       "Lato",
-                      color: Color(0xFF0d120E),
-                      fontWeight: FontWeight.bold, 
-                      fontSize:23,
+                      color: const Color(0xFF0d120E),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 23,
                     ),
                   ),
                   Text(
                     'To Explore the world exclusives',
                     style: GoogleFonts.getFont(
                       'Lato',
-                      color: Color(0xFF0d120E),
+                      color: const Color(0xFF0d120E),
                       fontSize: 14,
                       letterSpacing: 0.2,
                     ),
@@ -72,18 +78,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 200,
                   ),
                   Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      'Email',
-                      style: GoogleFonts.getFont(
-                        'Nunito Sans',
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 0.2,
-                      ),
-                    )
-                  ),
-                      
-                      
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'Email',
+                        style: GoogleFonts.getFont(
+                          'Nunito Sans',
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 0.2,
+                        ),
+                      )),
                   TextFormField(
                     onChanged: (value) {
                       email = value;
@@ -119,24 +122,21 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
-                      
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
-              
                   Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      'Password',
-                      style: GoogleFonts.getFont(
-                        'Nunito Sans',
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 0.2,
-                      ),
-                    )
-                  ),
-              
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'Password',
+                        style: GoogleFonts.getFont(
+                          'Nunito Sans',
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 0.2,
+                        ),
+                      )),
                   TextFormField(
+                    obscureText: _isObsure,
                     onChanged: (value) {
                       password = value;
                     },
@@ -147,7 +147,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         return null;
                       }
                     },
-                    obscureText: true,
                     decoration: InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
@@ -170,14 +169,21 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 20,
                         ),
                       ),
-                      suffixIcon: Icon(Icons.visibility),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _isObsure = !_isObsure;
+                          });
+                        },
+                        icon: Icon(
+                          _isObsure ? Icons.visibility : Icons.visibility_off,
+                        ),
+                      ),
                     ),
                   ),
-              
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
-              
                   InkWell(
                     onTap: () {
                       if (_formKey.currentState!.validate()) {
@@ -187,24 +193,28 @@ class _LoginScreenState extends State<LoginScreen> {
                       }
                     },
                     child: Container(
-                      width: 310,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 14, 14, 172),
-                        borderRadius: BorderRadius.circular(9),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          "Sign In",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
+                        width: 319,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 14, 14, 172),
+                          borderRadius: BorderRadius.circular(5),
+                          gradient: const LinearGradient(
+                            colors: [
+                              Color.fromARGB(255, 14, 14, 172),
+                              Color.fromARGB(255, 14, 14, 172),
+                            ],
                           ),
                         ),
-                      )
-                    ),
+                        child: const Center(
+                          child: Text(
+                            "Sign In",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                          ),
+                        )),
                   ),
-              
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

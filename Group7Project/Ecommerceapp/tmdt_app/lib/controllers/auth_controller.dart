@@ -5,12 +5,13 @@ class AuthController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<String> registerNewUser(String email, String fullName, String password) async {
-    String res = 'something went wrong';
-    
-    try {
+  Future<String> registerNewUser(
+      String email, String fullName, String password) async {
+    String res = 'Email hoặc Mật Khẩu không phù hợp';
 
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+    try {
+      UserCredential userCredential = await _auth
+          .createUserWithEmailAndPassword(email: email, password: password);
 
       await _firestore.collection('users').doc(userCredential.user!.uid).set({
         'email': email,
@@ -21,26 +22,36 @@ class AuthController {
         'pinCode': '',
         'uid': userCredential.user!.uid,
       });
-      
+
       res = 'success';
-      
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        res = 'Mật Khẩu Yếu';
+      } else if (e.code == 'email-already-in-use') {
+        res = 'Email đã được sử dụng.';
+      }
     } catch (e) {
       // Handle errors here
-      print('Error: $e');
+      res = e.toString();
     }
 
     return res;
   }
 
-
   Future<String> loginUser(String email, String password) async {
-    String res = 'something went wrong';
+    String res = 'Email hoặc Mật Khẩu không phù hợp';
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       res = 'success';
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        res = 'Email không tồn tại.';
+      } else if (e.code == 'wrong-password') {
+        res = 'Mật Khẩu không đúng.';
+      }
     } catch (e) {
       // Handle errors here
-      print('Error: $e');
+      res = e.toString();
     }
 
     return res;

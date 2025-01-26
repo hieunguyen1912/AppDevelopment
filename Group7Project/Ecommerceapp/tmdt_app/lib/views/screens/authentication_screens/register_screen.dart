@@ -10,17 +10,23 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   final AuthController _authController = AuthController();
-
+  bool _isLoading = false;
   late String email;
-
   late String password;
 
   late String fullName;
 
+  bool _isObscure = true;
+
   registerUser() async {
-    String res = await _authController.registerNewUser(email, fullName, password);
+    BuildContext localContext = context;
+    setState(() {
+      _isLoading = true;
+    });
+
+    String res =
+        await _authController.registerNewUser(email, fullName, password);
     if (res == 'success') {
       Navigator.pushReplacement(
         context,
@@ -30,13 +36,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
       );
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Đăng ký thành công!")),
+        const SnackBar(content: Text("Đăng ký thành công!")),
       );
-
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Đăng ký không thành công. Vui lòng thử lại!")),
-      );
+      setState(() {
+        _isLoading = false;
+      });
+
+      Future.delayed(Duration.zero, () {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(res)));
+      });
     }
   }
 
@@ -50,7 +60,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Form(
             key: _formKey,
             child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -58,16 +68,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     "Create Your Account",
                     style: GoogleFonts.getFont(
                       "Lato",
-                      color: Color(0xFF0d120E),
-                      fontWeight: FontWeight.bold, 
-                      fontSize:23,
+                      color: const Color(0xFF0d120E),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 23,
                     ),
                   ),
                   Text(
                     'To Explore the world exclusives',
                     style: GoogleFonts.getFont(
                       'Lato',
-                      color: Color(0xFF0d120E),
+                      color: const Color(0xFF0d120E),
                       fontSize: 14,
                       letterSpacing: 0.2,
                     ),
@@ -78,18 +88,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     height: 200,
                   ),
                   Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      'Email',
-                      style: GoogleFonts.getFont(
-                        'Nunito Sans',
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 0.2,
-                      ),
-                    )
-                  ),
-                      
-                      
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'Email',
+                        style: GoogleFonts.getFont(
+                          'Nunito Sans',
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 0.2,
+                        ),
+                      )),
                   TextFormField(
                     onChanged: (value) => email = value,
                     validator: (value) {
@@ -123,24 +130,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                   ),
-              
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
-              
-              
                   Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      'Full Name',
-                      style: GoogleFonts.getFont(
-                        'Nunito Sans',
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 0.2,
-                      ),
-                    )
-                  ),
-                      
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'Full Name',
+                        style: GoogleFonts.getFont(
+                          'Nunito Sans',
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 0.2,
+                        ),
+                      )),
                   TextFormField(
                     onChanged: (value) => fullName = value,
                     validator: (value) {
@@ -174,23 +176,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                   ),
-                      
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
-              
                   Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      'Password',
-                      style: GoogleFonts.getFont(
-                        'Nunito Sans',
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 0.2,
-                      ),
-                    )
-                  ),
-              
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'Password',
+                        style: GoogleFonts.getFont(
+                          'Nunito Sans',
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 0.2,
+                        ),
+                      )),
                   TextFormField(
                     onChanged: (value) => password = value,
                     validator: (value) {
@@ -200,7 +198,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         return null;
                       }
                     },
-                    obscureText: true,
+                    obscureText: _isObscure,
                     decoration: InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
@@ -223,42 +221,51 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           height: 20,
                         ),
                       ),
-                      suffixIcon: Icon(Icons.visibility),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _isObscure = !_isObscure;
+                          });
+                        },
+                        icon: Icon(
+                          _isObscure ? Icons.visibility : Icons.visibility_off,
+                        ),
+                      ),
                     ),
                   ),
-              
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
-              
                   InkWell(
                     onTap: () {
                       if (_formKey.currentState!.validate()) {
                         registerUser();
-                      }  
-                      else {
+                      } else {
                         print('failed');
                       }
                     },
                     child: Container(
-                      width: 310,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 14, 14, 172),
-                        borderRadius: BorderRadius.circular(9),
-                      ),
-                      child: Center(
-                        child: Text(
-                          "Sign Up",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
+                        width: 310,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(9),
+                          gradient: const LinearGradient(
+                            colors: [
+                              Color.fromARGB(255, 14, 14, 172),
+                              Color.fromARGB(255, 14, 14, 172),
+                            ],
                           ),
                         ),
-                      )
-                    ),
+                        child: const Center(
+                          child: Text(
+                            "Sign Up",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                          ),
+                        )),
                   ),
-              
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -281,15 +288,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ),
                             );
                           },
-                          child: Text(
-                            "Sign In",
-                            style: GoogleFonts.getFont(
-                              "Nunito Sans",
-                              fontSize: 14,
-                              letterSpacing: 0.1,
-                              color: Color.fromARGB(255, 14, 14, 172),
-                            ),
-                          ),
+                          child: _isLoading
+                              ? CircularProgressIndicator(
+                                  color: Colors.white,
+                                )
+                              : Text(
+                                  "Sign In",
+                                  style: GoogleFonts.getFont(
+                                    "Lato",
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blue,
+                                  ),
+                                ),
                         ),
                       ),
                     ],
