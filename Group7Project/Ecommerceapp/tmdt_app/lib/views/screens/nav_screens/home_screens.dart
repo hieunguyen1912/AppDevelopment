@@ -6,13 +6,9 @@ class HomeScreens extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            HeaderWidget(),
-          ],
-        ),
+    return Scaffold(
+      body: Center(
+        child: Text('Home'),
       ),
     );
   }
