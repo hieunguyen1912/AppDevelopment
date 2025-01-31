@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tmdt_app/views/screens/nav_screens/widgets/banner_widgets.dart';
 import 'package:tmdt_app/views/screens/nav_screens/widgets/header_widgets.dart';
 
 class HomeScreens extends StatelessWidget {
@@ -11,6 +12,7 @@ class HomeScreens extends StatelessWidget {
         child: Column(
           children: [
             HeaderWidget(),
+            BannerWidget(),
           ],
         ),
       ),
