@@ -47,7 +47,7 @@ class _CategoryListState extends State<CategoryList> {
                   },
                   child: Column(
                     children: [
-                      Image.network(categories[index].categoryImage, width: 50, height: 50, fit: BoxFit.cover,),
+                      Image.network(categories[index].categoryImage, width: 40, height: 40, fit: BoxFit.cover,),
                       Text(categories[index].categoryName, 
                       style: GoogleFonts.quicksand(
                         fontSize: 14,

@@ -17,7 +17,7 @@ class _BannerWidgetState extends State<BannerWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 16).copyWith(bottom: 32),
       child: Container(
         width: MediaQuery.of(context).size.width,
         height: 170,
