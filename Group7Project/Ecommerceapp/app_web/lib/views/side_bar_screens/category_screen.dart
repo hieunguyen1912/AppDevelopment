@@ -14,18 +14,22 @@ class _CategoryScreenState extends State<CategoryScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   dynamic _image;
   String? fileName;
+
   pickImage() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.image,
-      allowMultiple: false,
-    );
-    if (result != null) {
-      setState(() {
-        _image = result.files.single.path;
-        fileName = result.files.single.name;
-      });
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.image,
+        allowMultiple: false,
+      );
+      if (result != null) {
+        setState(() {
+          _image = result.files.first.bytes;
+          fileName = result.files.first.name;
+        });
+      }
+    } catch (e) {
+      print("Error picking file: $e");
     }
-    //pick image from gallery
   }
 
   @override
@@ -64,7 +68,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     ),
                     child: Center(
                       child: _image != null
-                          ? Image.memory(_image)
+                          ? Image.memory(
+                              _image,
+                              fit: BoxFit.cover,
+                              width: 150,
+                              height: 140,
+                            )
                           : Text(
                               'Upload Image ',
                               style: TextStyle(
@@ -120,10 +129,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 ),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    //upload calegory firebase
+                    //upload category to firebase
                   } else {
-                    //show erropr message
-                    print('bad reponse');
+                    //show error message
+                    print('bad response');
                   }
                 },
                 child: const Text(
