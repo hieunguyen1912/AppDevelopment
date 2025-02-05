@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class BuyerScreen extends StatelessWidget {
+  static const String id = '/buyerscreen';
   const BuyerScreen({super.key});
 
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class CategorisScreen extends StatelessWidget {
+  static const String id = '/categorisscreen';
   const CategorisScreen({super.key});
 
   @override
