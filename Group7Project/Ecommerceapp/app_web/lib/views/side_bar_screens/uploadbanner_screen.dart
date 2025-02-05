@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
-class UploadbannerScreen extends StatelessWidget {
+class UploadBannerScreen extends StatelessWidget {
   static const String id = '/uploadbannerscreen';
-  const UploadbannerScreen({super.key});
+  const UploadBannerScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
