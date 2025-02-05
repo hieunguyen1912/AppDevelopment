@@ -1,5 +1,5 @@
 import 'package:app_web/views/side_bar_screens/buyer_screen.dart';
-import 'package:app_web/views/side_bar_screens/categoris_screen.dart';
+import 'package:app_web/views/side_bar_screens/category_screen.dart';
 import 'package:app_web/views/side_bar_screens/orders_screen.dart';
 import 'package:app_web/views/side_bar_screens/products_screen.dart';
 import 'package:app_web/views/side_bar_screens/uploadbanner_screen.dart';
@@ -37,9 +37,9 @@ class _MainScreenState extends State<MainScreen> {
           _selectedScreen = OrdersScreen();
         });
         break;
-      case CategorisScreen.id:
+      case CategoryScreen.id:
         setState(() {
-          _selectedScreen = CategorisScreen();
+          _selectedScreen = CategoryScreen();
         });
         break;
 
@@ -83,7 +83,7 @@ class _MainScreenState extends State<MainScreen> {
           ),
           AdminMenuItem(
             title: 'Categoris',
-            route: CategorisScreen.id,
+            route: CategoryScreen.id,
             icon: Icons.category,
           ),
           AdminMenuItem(
