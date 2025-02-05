@@ -28,14 +28,24 @@ class MainScreen extends StatelessWidget {
             icon: CupertinoIcons.person,
           ),
           AdminMenuItem(
+            title: 'Orders',
+            route: "",
+            icon: CupertinoIcons.shopping_cart,
+          ),
+          AdminMenuItem(
             title: 'Categoris',
             route: "",
             icon: Icons.category,
           ),
           AdminMenuItem(
-            title: 'Banner',
+            title: 'Upload Banner',
             route: "",
-            icon: CupertinoIcons.person,
+            icon: Icons.upload,
+          ),
+          AdminMenuItem(
+            title: 'Products',
+            route: "",
+            icon: Icons.store,
           ),
         ],
         selectedRoute: '',
