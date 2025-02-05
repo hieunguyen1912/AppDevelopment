@@ -26,43 +26,68 @@ class CategoryScreen extends StatelessWidget {
         ),
         Row(
           children: [
-            Container(
-              height: 140,
-              width: 150,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade500,
-                border: Border.all(
-                  color: Colors.grey.shade800,
+            Column(
+              children: [
+                Container(
+                  height: 140,
+                  width: 150,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade500,
+                    border: Border.all(color: Colors.grey.shade800),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Upload Image ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ),
-                borderRadius: BorderRadius.circular(8),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    child: Text(
+                      'Upload Image',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              width: 30,
+            ),
+            Container(
+              width: 150,
+              child: TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Category Name',
+                ),
               ),
-              child: Center(
-                child: Text(
-                  'Upload Image ',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
+            ),
+            TextButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(
+                  Colors.white,
+                ),
+                side: MaterialStateProperty.all(
+                  BorderSide(
+                    color: Colors.blue.shade900,
                   ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                onPressed: () {},
-                child: Text(
-                  'Upload Image',
-                  style: TextStyle(color: Colors.white),
-                ),
+              onPressed: () {},
+              child: Text(
+                "Save",
               ),
             ),
-            Container(
-              width: 50,
-              child: TextFormField(
-                decoration: InputDecoration(labelText: 'Category Name'),
-              ),
-            )
           ],
-        )
+        ),
       ],
     );
   }
