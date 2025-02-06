@@ -1,3 +1,4 @@
+import 'package:app_web/views/side_bar_screens/widgets/category_list_widget.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -170,6 +171,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
               ),
             ],
           ),
+          CategoryListWidget(),
         ],
       ),
     );
