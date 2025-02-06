@@ -1,6 +1,9 @@
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CategoryScreen extends StatefulWidget {
   static const String id = '/categoryScreen';
@@ -12,11 +15,14 @@ class CategoryScreen extends StatefulWidget {
 
 class _CategoryScreenState extends State<CategoryScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   dynamic _image;
   String? fileName;
+  late String categoryName;
 
   pickImage() async {
-    try {
+    {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.image,
         allowMultiple: false,
@@ -27,8 +33,28 @@ class _CategoryScreenState extends State<CategoryScreen> {
           fileName = result.files.first.name;
         });
       }
-    } catch (e) {
-      print("Error picking file: $e");
+    }
+  }
+
+  _uploadImageToStorage(dynamic imgage) async {
+    Reference ref =
+        FirebaseStorage.instance.ref().child('categories').child(fileName!);
+    UploadTask uploadTask = ref.putData(_image);
+    TaskSnapshot snap = await uploadTask;
+    String downloadUrl = await snap.ref.getDownloadURL();
+    return downloadUrl;
+  }
+
+  uploadToFirebase() async {
+    if (_formKey.currentState!.validate()) {
+      if (_image != null) {
+        String imageUrl = await _uploadImageToStorage(_image);
+        await _firestore.collection('categories').doc(fileName).set({
+          'categoryName': categoryName,
+          'categoryImage': imageUrl,
+        });
+      }
+      //upload category to firebase
     }
   }
 
@@ -104,6 +130,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
               SizedBox(
                 width: 150,
                 child: TextFormField(
+                  onChanged: (value) {
+                    categoryName = value;
+                  },
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Please enter a category name';
