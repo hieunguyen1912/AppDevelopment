@@ -13,6 +13,7 @@ class ProductsScreen extends StatefulWidget {
 class _ProductsScreenState extends State<ProductsScreen> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final List<String> _categoryList = [];
+  String? selectedCategory;
 
   _getCategories() {
     return _firestore
@@ -175,7 +176,13 @@ class _ProductsScreenState extends State<ProductsScreen> {
           child: Text(value),
         );
       }).toList(),
-      onChanged: (value) {},
+      onChanged: (value) {
+        if (value != null) {
+          setState(() {
+            selectedCategory = value;
+          });
+        }
+      },
     ); // Replace with your actual widget
   }
 }
