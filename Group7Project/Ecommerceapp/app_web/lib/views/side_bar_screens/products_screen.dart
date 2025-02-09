@@ -1,12 +1,37 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class ProductsScreen extends StatelessWidget {
-  static const String id = '/productsscreen';
+class ProductsScreen extends StatefulWidget {
+  static const String id = '/products-screen';
 
   const ProductsScreen({super.key});
 
-  _getCategories() {}
+  @override
+  State<ProductsScreen> createState() => _ProductsScreenState();
+}
+
+class _ProductsScreenState extends State<ProductsScreen> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final List<String> _categoryList = [];
+
+  _getCategories() {
+    return _firestore
+        .collection('categories')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        setState(() {
+          _categoryList.add(doc['categoryName']);
+        });
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    _getCategories();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,17 +83,7 @@ class ProductsScreen extends StatelessWidget {
                 width: 20,
               ),
               Flexible(
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Enter Category',
-                    filled: true,
-                    fillColor: Colors.grey[200],
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
+                child: buildDropDownField(),
               ),
             ],
           ),
@@ -141,5 +156,26 @@ class ProductsScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget buildDropDownField() {
+    return DropdownButtonFormField(
+      decoration: InputDecoration(
+        labelText: 'Select Category',
+        filled: true,
+        fillColor: Colors.grey[200],
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
+        ),
+      ),
+      items: _categoryList.map((value) {
+        return DropdownMenuItem(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+      onChanged: (value) {},
+    ); // Replace with your actual widget
   }
 }
