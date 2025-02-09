@@ -15,7 +15,11 @@ class ProductsScreen extends StatefulWidget {
 
 class _ProductsScreenState extends State<ProductsScreen> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final TextEditingController _sizeController = TextEditingController();
+
   final List<String> _categoryList = [];
+
+  final List<String> _sizeList = [];
   String? selectedCategory;
 
   bool _isEntered = false;
@@ -150,6 +154,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   child: SizedBox(
                     width: 200,
                     child: TextFormField(
+                      controller: _sizeController,
                       onChanged: (value) {
                         setState(() {
                           _isEntered = true;
@@ -173,7 +178,11 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 _isEntered == true
                     ? Flexible(
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            _sizeList.add(_sizeController.text);
+
+                            print(_sizeList);
+                          },
                           child: const Text('Add'),
                         ),
                       )
