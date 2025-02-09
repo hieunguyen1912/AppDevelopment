@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 class ProductsScreen extends StatefulWidget {
@@ -14,6 +17,25 @@ class _ProductsScreenState extends State<ProductsScreen> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final List<String> _categoryList = [];
   String? selectedCategory;
+
+  List<Uint8List> _images = [];
+
+  chooseImage() async {
+    final pickedImages = await FilePicker.platform.pickFiles(
+      allowMultiple: true,
+      type: FileType.image,
+    );
+
+    if (pickedImages == null) {
+      print('No Image Picked');
+    } else {
+      setState(() {
+        for (var file in pickedImages.files) {
+          _images.add(file.bytes!);
+        }
+      });
+    }
+  }
 
   _getCategories() {
     return _firestore
@@ -133,6 +155,22 @@ class _ProductsScreenState extends State<ProductsScreen> {
           SizedBox(
             height: 20,
           ),
+          GridView.builder(
+              itemCount: _images.length + 1,
+              shrinkWrap: true,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3, mainAxisSpacing: 8, crossAxisSpacing: 8),
+              itemBuilder: (context, index) {
+                return index == 0
+                    ? Center(
+                        child: IconButton(
+                            onPressed: () {
+                              chooseImage();
+                            },
+                            icon: const Icon(Icons.add)),
+                      )
+                    : Image.memory(_images[index - 1]);
+              }),
           InkWell(
             onTap: () {},
             child: Container(
