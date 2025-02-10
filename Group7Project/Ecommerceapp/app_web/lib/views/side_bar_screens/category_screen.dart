@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class CategoryScreen extends StatefulWidget {
-  static const String id = '/categoryScreen';
+  static const String id = 'categoryScreen';
   const CategoryScreen({super.key});
 
   @override
@@ -169,7 +169,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
               ),
             ],
           ),
-          CategoryListWidget(),
+          const CategoryListWidget(),
         ],
       ),
     );

@@ -2,7 +2,7 @@ import 'package:app_web/views/side_bar_screens/buyer_screen.dart';
 import 'package:app_web/views/side_bar_screens/category_screen.dart';
 import 'package:app_web/views/side_bar_screens/orders_screen.dart';
 import 'package:app_web/views/side_bar_screens/products_screen.dart';
-import 'package:app_web/views/side_bar_screens/uploadbanner_screen.dart';
+import 'package:app_web/views/side_bar_screens/upload_banner_screen.dart';
 import 'package:app_web/views/side_bar_screens/vendors_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

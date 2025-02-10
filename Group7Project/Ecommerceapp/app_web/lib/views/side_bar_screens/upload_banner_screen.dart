@@ -7,7 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class UploadBannerScreen extends StatefulWidget {
-  static const String id = '/UploadBannerScreen';
+  static const String id = 'UploadBannerScreen';
   const UploadBannerScreen({super.key});
 
   @override
@@ -146,6 +146,7 @@ class _UploadBannerScreentate extends State<UploadBannerScreen> {
               ),
             ],
           ),
+          const BannerListWidget(),
         ],
       ),
     );
