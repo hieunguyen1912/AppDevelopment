@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,10 +30,12 @@ class CategoryListWidget extends StatelessWidget {
                 crossAxisCount: 6, mainAxisSpacing: 8, crossAxisSpacing: 8),
             itemBuilder: (context, index) {
               final categoryData = snapshot.data!.docs[index];
+              final base64Image = categoryData['categoryImage'];
+              final imageBytes = base64Decode(base64Image);
               return Column(
                 children: [
-                  Image.network(
-                    categoryData['categoryImage'],
+                  Image.memory(
+                    imageBytes,
                     height: 100,
                     width: 100,
                   ),
