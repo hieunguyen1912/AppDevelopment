@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 class ProductsScreen extends StatefulWidget {
-  static const String id = '/products-screen';
+  static const String id = 'products-screen';
 
   const ProductsScreen({super.key});
 
@@ -20,6 +20,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
   final TextEditingController _sizeController = TextEditingController();
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  bool _isLoading = false;
 
   final List<String> _categoryList = [];
 
@@ -44,7 +45,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
     );
 
     if (pickedImages == null) {
-      print('No Image Picked');
+      //print('No Image Picked');
     } else {
       setState(() {
         for (var file in pickedImages.files) {
@@ -90,21 +91,28 @@ class _ProductsScreenState extends State<ProductsScreen> {
 
   //function to upload
   uploadData() async {
-    await uploadImageToStorage();
-    if (_imageUrls.isNotEmpty) {
-      final productId = Uuid().v4();
-      await _firestore.collection('products').doc(productId).set({
-        'productID': productId,
-        'productName': productName,
-        'productPrice': productPrice,
-        'productSize': _sizeList,
-        'category': selectedCategory,
-        'description': description,
-        'discount': discount,
-        'quantity': quantity,
-        'productImage': _imageUrls,
+    setState(() {
+      _isLoading = true;
+    });
+    final productId = Uuid().v4();
+    await _firestore.collection('products').doc(productId).set({
+      'productID': productId,
+      'productName': productName,
+      'productPrice': productPrice,
+      'productSize': _sizeList,
+      'category': selectedCategory,
+      'description': description,
+      'discount': discount,
+      'quantity': quantity,
+      'productImage': _imageUrls,
+    }).whenComplete(() {
+      setState(() {
+        _isLoading = false;
+        _formkey.currentState!.reset();
+        _imageUrls.clear();
+        _images.clear();
       });
-    }
+    });
   }
 
   @override
@@ -208,7 +216,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               TextFormField(
@@ -382,16 +390,20 @@ class _ProductsScreenState extends State<ProductsScreen> {
                     color: Colors.blue,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Center(
-                    child: Text(
-                      'Upload Product',
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
+                  child: _isLoading
+                      ? const CircularProgressIndicator(
+                          color: Colors.white,
+                        )
+                      : Center(
+                          child: Text(
+                            'Upload Product',
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
                 ),
               )
             ],

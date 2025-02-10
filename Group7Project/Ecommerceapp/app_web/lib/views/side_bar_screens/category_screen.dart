@@ -1,12 +1,12 @@
+import 'dart:convert';
 import 'package:app_web/views/side_bar_screens/widgets/category_list_widget.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class CategoryScreen extends StatefulWidget {
-  static const String id = '/categoryScreen';
+  static const String id = 'categoryScreen';
   const CategoryScreen({super.key});
 
   @override
@@ -15,7 +15,6 @@ class CategoryScreen extends StatefulWidget {
 
 class _CategoryScreenState extends State<CategoryScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   dynamic _image;
   String? fileName;
@@ -34,22 +33,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
     }
   }
 
-  _uploadImageToStorage(dynamic image) async {
-    Reference ref = _firebaseStorage.ref().child('categories').child(fileName!);
-    UploadTask uploadTask = ref.putData(image);
-    TaskSnapshot snap = await uploadTask;
-    String downloadUrl = await snap.ref.getDownloadURL();
-    return downloadUrl;
-  }
-
   uploadToFirebase() async {
     if (_formKey.currentState!.validate()) {
       if (_image != null) {
         EasyLoading.show();
-        String imageUrl = await _uploadImageToStorage(_image);
+        String base64Image = base64Encode(_image);
         await _firestore.collection('categories').doc(fileName).set({
           'categoryName': categoryName,
-          'categoryImage': imageUrl,
+          'categoryImage': base64Image,
         }).whenComplete(() {
           EasyLoading.dismiss();
           _image = null;
@@ -151,10 +142,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
               ),
               TextButton(
                 style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.all(
+                  backgroundColor: MaterialStateProperty.all(
                     Colors.white,
                   ),
-                  side: WidgetStateProperty.all(
+                  side: MaterialStateProperty.all(
                     BorderSide(
                       color: Colors.blue.shade900,
                     ),
@@ -169,7 +160,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
               ),
             ],
           ),
-          CategoryListWidget(),
+          const CategoryListWidget(),
         ],
       ),
     );
