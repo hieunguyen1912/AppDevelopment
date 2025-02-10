@@ -10,6 +10,5 @@ class StoresScreens extends StatelessWidget {
         child: Text('Stores'),
       ),
     );
-    ;
   }
 }

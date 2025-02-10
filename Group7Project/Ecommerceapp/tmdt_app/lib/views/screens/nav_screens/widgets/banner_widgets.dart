@@ -44,24 +44,4 @@ class _BannerWidgetState extends State<BannerWidget> {
       ),
     );
   }
-
-  Widget _buildPageIndicator(pageCount) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: List.generate(pageCount, (index) {
-          return Container(
-            width: 8,
-            height: 8,
-            margin: EdgeInsets.symmetric(horizontal: 5),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: index == 0 ? Colors.blue : Colors.grey,
-            ),
-          );
-        }),
-      ),
-    );
-  }
 }
