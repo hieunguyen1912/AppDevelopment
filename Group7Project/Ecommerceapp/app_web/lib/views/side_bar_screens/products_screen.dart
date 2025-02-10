@@ -179,17 +179,54 @@ class _ProductsScreenState extends State<ProductsScreen> {
                     ? Flexible(
                         child: ElevatedButton(
                           onPressed: () {
-                            _sizeList.add(_sizeController.text);
-
-                            print(_sizeList);
+                            setState(() {
+                              _sizeList.add(_sizeController.text);
+                            });
                           },
-                          child: const Text('Add'),
+                          child: const Text(
+                            'Add',
+                          ),
                         ),
                       )
                     : const Text(''),
               ],
             ),
-            SizedBox(
+            _sizeList.isNotEmpty
+                ? Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: SizedBox(
+                      height: 50,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: _sizeList.length,
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: () {},
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.blue.shade800,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    _sizeList[index],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  )
+                : Text(''),
+            const SizedBox(
               height: 20,
             ),
             GridView.builder(
