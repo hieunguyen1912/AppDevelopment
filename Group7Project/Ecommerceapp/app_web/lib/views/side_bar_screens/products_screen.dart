@@ -20,8 +20,14 @@ class _ProductsScreenState extends State<ProductsScreen> {
 
   final List<String> _categoryList = [];
 
+  //wuploadding values stored in this
   final List<String> _sizeList = [];
   String? selectedCategory;
+  late String productName;
+  late num producePrice;
+  late num discount;
+  late num quantity;
+  late String description;
 
   bool _isEntered = false;
 
@@ -84,6 +90,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 height: 15,
               ),
               TextFormField(
+                onChanged: (value) {
+                  productName = value;
+                },
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Please enter filed';
@@ -108,6 +117,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 children: [
                   Flexible(
                     child: TextFormField(
+                      onChanged: (value) {
+                        producePrice = double.parse(value);
+                      },
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Please enter filed';
@@ -138,6 +150,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 height: 20,
               ),
               TextFormField(
+                onChanged: (value) {
+                  discount = int.parse(value);
+                },
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Please enter filed';
@@ -159,6 +174,33 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 height: 20,
               ),
               TextFormField(
+                onChanged: (value) {
+                  quantity = int.parse(value);
+                },
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter filed';
+                  } else {
+                    return null;
+                  }
+                },
+                decoration: InputDecoration(
+                  labelText: 'Quantity',
+                  filled: true,
+                  fillColor: Colors.grey[200],
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              TextFormField(
+                onChanged: (value) {
+                  description = value;
+                },
                 maxLength: 800,
                 maxLines: 4,
                 validator: (value) {
