@@ -181,6 +181,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                           onPressed: () {
                             setState(() {
                               _sizeList.add(_sizeController.text);
+                              _sizeController.clear();
                             });
                           },
                           child: const Text(
