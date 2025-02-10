@@ -151,10 +151,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
               ),
               TextButton(
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
+                  backgroundColor: WidgetStateProperty.all(
                     Colors.white,
                   ),
-                  side: MaterialStateProperty.all(
+                  side: WidgetStateProperty.all(
                     BorderSide(
                       color: Colors.blue.shade900,
                     ),

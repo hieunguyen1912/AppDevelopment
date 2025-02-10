@@ -201,7 +201,11 @@ class _ProductsScreenState extends State<ProductsScreen> {
                         itemCount: _sizeList.length,
                         itemBuilder: (context, index) {
                           return InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              setState(() {
+                                _sizeList.removeAt(index);
+                              });
+                            },
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: Container(
