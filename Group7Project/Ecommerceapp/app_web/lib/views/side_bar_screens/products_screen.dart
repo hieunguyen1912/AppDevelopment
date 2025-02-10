@@ -2,7 +2,9 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 class ProductsScreen extends StatefulWidget {
   static const String id = '/products-screen';
@@ -16,6 +18,7 @@ class ProductsScreen extends StatefulWidget {
 class _ProductsScreenState extends State<ProductsScreen> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final TextEditingController _sizeController = TextEditingController();
+  final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
   final List<String> _categoryList = [];
@@ -23,15 +26,16 @@ class _ProductsScreenState extends State<ProductsScreen> {
   //wuploadding values stored in this
   final List<String> _sizeList = [];
   String? selectedCategory;
-  late String productName;
-  late num producePrice;
-  late num discount;
-  late num quantity;
-  late String description;
+  String? productName;
+  double? productPrice;
+  int? discount;
+  int? quantity;
+  String? description;
 
   bool _isEntered = false;
 
   final List<Uint8List> _images = [];
+  final List<String> _imageUrls = [];
 
   chooseImage() async {
     final pickedImages = await FilePicker.platform.pickFiles(
@@ -67,6 +71,40 @@ class _ProductsScreenState extends State<ProductsScreen> {
   void initState() {
     _getCategories();
     super.initState();
+  }
+
+  //upload product img to storage
+  uploadImageToStorage() async {
+    for (var img in _images) {
+      Reference ref =
+          _firebaseStorage.ref().child('productImage').child(Uuid().v4());
+      await ref.putData(img).whenComplete(() async {
+        await ref.getDownloadURL().then((value) {
+          setState(() {
+            _imageUrls.add(value);
+          });
+        });
+      });
+    }
+  }
+
+  //function to upload
+  uploadData() async {
+    await uploadImageToStorage();
+    if (_imageUrls.isNotEmpty) {
+      final productId = Uuid().v4();
+      await _firestore.collection('products').doc(productId).set({
+        'productID': productId,
+        'productName': productName,
+        'productPrice': productPrice,
+        'productSize': _sizeList,
+        'category': selectedCategory,
+        'description': description,
+        'discount': discount,
+        'quantity': quantity,
+        'productImage': _imageUrls,
+      });
+    }
   }
 
   @override
@@ -118,7 +156,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   Flexible(
                     child: TextFormField(
                       onChanged: (value) {
-                        producePrice = double.parse(value);
+                        productPrice = double.parse(value);
                       },
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -330,7 +368,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
               InkWell(
                 onTap: () {
                   if (_formkey.currentState!.validate()) {
-                    //upload product to cloud firestore
+                    uploadData();
                     print('upload');
                   } else {
                     //please fill in all fieds
