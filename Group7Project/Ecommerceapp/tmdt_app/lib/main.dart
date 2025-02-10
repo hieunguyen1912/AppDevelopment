@@ -1,9 +1,6 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tmdt_app/views/screens/authentication_screens/login_screens.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:tmdt_app/views/screens/authentication_screens/register_screen.dart';
 import 'package:tmdt_app/views/screens/main_screens.dart';
 import 'firebase_options.dart';
 
