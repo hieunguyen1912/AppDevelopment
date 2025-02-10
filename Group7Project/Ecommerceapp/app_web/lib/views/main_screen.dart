@@ -61,10 +61,49 @@ class _MainScreenState extends State<MainScreen> {
     return AdminScaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        title: const Text('Mannagement'),
+        title: const Text(
+          'Mannagement',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            letterSpacing: 4,
+          ),
+        ),
       ),
       body: _selectedScreen,
       sideBar: SideBar(
+        header: Container(
+          height: 50,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.black,
+          ),
+          child: Center(
+            child: Text(
+              'Mult Vendor admin',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1.7,
+              ),
+            ),
+          ),
+        ),
+        footer: Container(
+          height: 50,
+          width: double.infinity,
+          color: Colors.black,
+          child: const Center(
+            child: Text(
+              'Footer',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
         items: const [
           AdminMenuItem(
             title: 'Vendors',
