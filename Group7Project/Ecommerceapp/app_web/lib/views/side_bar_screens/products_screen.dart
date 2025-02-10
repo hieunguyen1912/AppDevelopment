@@ -94,28 +94,25 @@ class _ProductsScreenState extends State<ProductsScreen> {
     setState(() {
       _isLoading = true;
     });
-    await uploadImageToStorage();
-    if (_imageUrls.isNotEmpty) {
-      final productId = Uuid().v4();
-      await _firestore.collection('products').doc(productId).set({
-        'productID': productId,
-        'productName': productName,
-        'productPrice': productPrice,
-        'productSize': _sizeList,
-        'category': selectedCategory,
-        'description': description,
-        'discount': discount,
-        'quantity': quantity,
-        'productImage': _imageUrls,
-      }).whenComplete(() {
-        setState(() {
-          _isLoading = false;
-          _formkey.currentState!.reset();
-          _imageUrls.clear();
-          _images.clear();
-        });
+    final productId = Uuid().v4();
+    await _firestore.collection('products').doc(productId).set({
+      'productID': productId,
+      'productName': productName,
+      'productPrice': productPrice,
+      'productSize': _sizeList,
+      'category': selectedCategory,
+      'description': description,
+      'discount': discount,
+      'quantity': quantity,
+      'productImage': _imageUrls,
+    }).whenComplete(() {
+      setState(() {
+        _isLoading = false;
+        _formkey.currentState!.reset();
+        _imageUrls.clear();
+        _images.clear();
       });
-    }
+    });
   }
 
   @override

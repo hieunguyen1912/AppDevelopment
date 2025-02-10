@@ -2,7 +2,6 @@ import 'package:app_web/views/side_bar_screens/buyer_screen.dart';
 import 'package:app_web/views/side_bar_screens/category_screen.dart';
 import 'package:app_web/views/side_bar_screens/orders_screen.dart';
 import 'package:app_web/views/side_bar_screens/products_screen.dart';
-import 'package:app_web/views/side_bar_screens/upload_banner_screen.dart';
 import 'package:app_web/views/side_bar_screens/vendors_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -43,11 +42,6 @@ class _MainScreenState extends State<MainScreen> {
         });
         break;
 
-      case UploadBannerScreen.id:
-        setState(() {
-          _selectedScreen = UploadBannerScreen();
-        });
-        break;
       case ProductsScreen.id:
         setState(() {
           _selectedScreen = ProductsScreen();
@@ -124,11 +118,6 @@ class _MainScreenState extends State<MainScreen> {
             title: 'Categoris',
             route: CategoryScreen.id,
             icon: Icons.category,
-          ),
-          AdminMenuItem(
-            title: 'Upload Banner',
-            route: UploadBannerScreen.id,
-            icon: Icons.upload,
           ),
           AdminMenuItem(
             title: 'Products',
