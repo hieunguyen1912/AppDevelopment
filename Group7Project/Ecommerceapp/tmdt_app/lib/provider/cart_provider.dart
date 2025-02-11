@@ -1,7 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tmdt_app/models/cart_models.dart';
 
-final CartModel = StateNotifierProvider(_createFn)
+final cartProvied = StateNotifierProvider<CartNotifier, Map<String, CartModel>>(
+  (Ref) {
+    return CartNotifier();
+  },
+);
 
 class CartNotifier extends StateNotifier<Map<String, CartModel>> {
   CartNotifier() : super({});
