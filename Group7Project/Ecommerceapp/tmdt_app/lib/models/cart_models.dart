@@ -1,6 +1,6 @@
 class CartModel {
   final String productName;
-  final double productPrice;
+  final int productPrice;
   final String categoryname;
   final List imageUrl;
   final int quantily;

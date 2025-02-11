@@ -12,7 +12,7 @@ class CartNotifier extends StateNotifier<Map<String, CartModel>> {
 
   void appProductToCart({
     required String productName,
-    required double productPrice,
+    required int productPrice,
     required String categoryname,
     required List imageUrl,
     required int quantily,

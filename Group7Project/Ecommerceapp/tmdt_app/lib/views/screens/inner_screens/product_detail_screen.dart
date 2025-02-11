@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tmdt_app/provider/cart_provider.dart';
 
-class ProductDetailScreen extends StatelessWidget {
+class ProductDetailScreen extends ConsumerStatefulWidget {
   final dynamic productData;
 
   const ProductDetailScreen({super.key, required this.productData});
 
   @override
+  _ProductDetailScreenState createState() => _ProductDetailScreenState();
+}
+
+class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
+  @override
   Widget build(BuildContext context) {
+    final _cartProvied = ref.read(cartProvied.notifier);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -65,14 +73,15 @@ class ProductDetailScreen extends StatelessWidget {
                           color: const Color(0xFF9CA8FF),
                           borderRadius: BorderRadius.circular(108),
                         ),
-                        child: productData['productImage'] != null &&
-                                productData['productImage'].isNotEmpty
+                        child: widget.productData['productImage'] != null &&
+                                widget.productData['productImage'].isNotEmpty
                             ? PageView.builder(
                                 scrollDirection: Axis.horizontal,
-                                itemCount: productData['productImage'].length,
+                                itemCount:
+                                    widget.productData['productImage'].length,
                                 itemBuilder: (context, index) {
                                   return Image.network(
-                                    productData['productImage'][index],
+                                    widget.productData['productImage'][index],
                                     width: 198,
                                     height: 225,
                                     fit: BoxFit.cover,
@@ -96,7 +105,7 @@ class ProductDetailScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    productData['productName'] ?? 'Unknown Product',
+                    widget.productData['productName'] ?? 'Unknown Product',
                     style: GoogleFonts.roboto(
                       fontSize: 17,
                       fontWeight: FontWeight.bold,
@@ -105,7 +114,7 @@ class ProductDetailScreen extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '\$${productData['productPrice'] ?? '0.00'}',
+                    '\$${widget.productData['productPrice'] ?? '0.00'}',
                     style: GoogleFonts.roboto(
                       fontSize: 17,
                       fontWeight: FontWeight.bold,
@@ -121,7 +130,7 @@ class ProductDetailScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 4),
               child: Text(
-                productData['category'] ?? 'Unknown Category',
+                widget.productData['category'] ?? 'Unknown Category',
                 style: GoogleFonts.roboto(
                   fontSize: 17,
                   letterSpacing: 1,
@@ -147,18 +156,46 @@ class ProductDetailScreen extends StatelessWidget {
                   Expanded(
                     child: SizedBox(
                       height: 50,
-                      child: productData['productSize'] != null &&
-                              productData['productSize'].isNotEmpty
+                      child: widget.productData['productSize'] != null &&
+                              widget.productData['productSize'].isNotEmpty
                           ? ListView.builder(
                               scrollDirection: Axis.horizontal,
-                              itemCount: productData['productSize'].length,
+                              itemCount:
+                                  widget.productData['productSize'].length,
                               itemBuilder: (context, index) {
                                 return InkWell(
                                   onTap: () {
+                                    _cartProvied.appProductToCart(
+                                        productName:
+                                            widget.productData['productName'],
+                                        productPrice:
+                                            widget.productData['productPrice'],
+                                        categoryname:
+                                            widget.productData['category'],
+                                        imageUrl:
+                                            widget.productData['productImage'],
+                                        quantily: 1,
+                                        instock: widget.productData['quantily'],
+                                        productId:
+                                            widget.productData['productId'],
+                                        productSize: '',
+                                        discount:
+                                            widget.productData['discount'],
+                                        description:
+                                            widget.productData['description']);
+
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            margin: const EdgeInsets.all(15),
+                                            behavior: SnackBarBehavior.floating,
+                                            backgroundColor: Colors.grey,
+                                            content: Text(widget
+                                                .productData['productData'])));
                                     // Thêm chức năng chọn size nếu cần
                                   },
                                   child: Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 5),
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 5),
                                     alignment: Alignment.center,
                                     width: 50,
                                     height: 50,
@@ -167,7 +204,7 @@ class ProductDetailScreen extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Text(
-                                      productData['productSize'][index],
+                                      widget.productData['productSize'][index],
                                       style: GoogleFonts.roboto(
                                         fontSize: 17,
                                         letterSpacing: 1.6,
@@ -190,27 +227,24 @@ class ProductDetailScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'About',
-                    style: GoogleFonts.lato(
-                      color: Color(0xFF363330),
-                      fontSize: 16,
-                      letterSpacing: 1
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'About',
+                      style: GoogleFonts.lato(
+                          color: Color(0xFF363330),
+                          fontSize: 16,
+                          letterSpacing: 1),
                     ),
-                  ),
-
-                  Text(
-                  productData['description'] ?? 'No description available.',
-                  style: GoogleFonts.roboto(
-                      color: Color(0xFF363330),
-                      fontSize: 16,
-                      letterSpacing: 1
+                    Text(
+                      widget.productData['description'] ??
+                          'No description available.',
+                      style: GoogleFonts.roboto(
+                          color: Color(0xFF363330),
+                          fontSize: 16,
+                          letterSpacing: 1),
                     ),
-                  ),
-                ]
-              ),
+                  ]),
             ),
 
             const Spacer(), // Đẩy nút xuống cuối màn hình
