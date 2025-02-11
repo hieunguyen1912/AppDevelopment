@@ -3,6 +3,7 @@ import 'package:badges/badges.dart' as badges;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tmdt_app/provider/cart_provider.dart';
+import 'package:tmdt_app/views/screens/main_screens.dart';
 
 class CartScreens extends ConsumerStatefulWidget {
   const CartScreens({super.key});
@@ -81,9 +82,31 @@ class _CartScreensState extends ConsumerState<CartScreens> {
         body: cartData.isEmpty
             ? Center(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                        'your shopping cart is empty you can add product to your cart from the button bellow')
+                      'your shopping cart is empty you can add product to your cart from the button bellow',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.roboto(
+                        fontSize: 17,
+                        letterSpacing: 1.7,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return MainScreen();
+                        }));
+                      },
+                      child: Text(
+                        'Shop Now',
+                        style: GoogleFonts.lato(
+                          fontSize: 17,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               )
