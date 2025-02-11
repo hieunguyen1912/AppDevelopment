@@ -1,7 +1,9 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tmdt_app/models/cart_models.dart';
 
-final cartProvied = StateNotifierProvider<CartNotifier, Map<String, CartModel>>(
+final cartProviedr =
+    StateNotifierProvider<CartNotifier, Map<String, CartModel>>(
   (Ref) {
     return CartNotifier();
   },
@@ -42,17 +44,20 @@ class CartNotifier extends StateNotifier<Map<String, CartModel>> {
       state = {
         ...state,
         productId: CartModel(
-            productName: productName,
-            productPrice: productPrice,
-            categoryname: categoryname,
-            imageUrl: imageUrl,
-            quantily: quantily,
-            instock: instock,
-            productId: productId,
-            productSize: productSize,
-            discount: discount,
-            description: description)
+          productName: productName,
+          productPrice: productPrice,
+          categoryname: categoryname,
+          imageUrl: imageUrl,
+          quantily: quantily,
+          instock: instock,
+          productId: productId,
+          productSize: productSize,
+          discount: discount,
+          description: description,
+        )
       };
     }
   }
+
+  Map<String, CartModel> get getCartItem => state;
 }
