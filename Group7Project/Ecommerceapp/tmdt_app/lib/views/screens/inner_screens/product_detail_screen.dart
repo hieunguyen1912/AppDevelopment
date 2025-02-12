@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tmdt_app/provider/cart_provider.dart';
+import 'package:tmdt_app/models/cart_models.dart';
 
 class ProductDetailScreen extends ConsumerStatefulWidget {
   final dynamic productData;
@@ -15,7 +16,8 @@ class ProductDetailScreen extends ConsumerStatefulWidget {
 class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   @override
   Widget build(BuildContext context) {
-    final _cartProvied = ref.read(cartProviedr.notifier);
+    final _cartProvider = ref.read(cartProvider.notifier);
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -165,32 +167,18 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                               itemBuilder: (context, index) {
                                 return InkWell(
                                   onTap: () {
-                                    _cartProvied.appProductToCart(
-                                        productName:
-                                            widget.productData['productName'],
-                                        productPrice:
-                                            widget.productData['productPrice'],
-                                        categoryname:
-                                            widget.productData['category'],
-                                        imageUrl:
-                                            widget.productData['productImage'],
-                                        quantily: 1,
-                                        instock: widget.productData['quantily'],
-                                        productId:
-                                            widget.productData['productId'],
-                                        productSize: '',
-                                        discount:
-                                            widget.productData['discount'],
-                                        description:
-                                            widget.productData['description']);
 
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(
                                             margin: const EdgeInsets.all(15),
                                             behavior: SnackBarBehavior.floating,
                                             backgroundColor: Colors.grey,
-                                            content: Text(widget
-                                                .productData['productData'])));
+                                            content: Text(
+                                              "Selected size: ${widget.productData['productSize'][index]}"
+                                            ),
+                                            duration: const Duration(seconds: 1),
+                                      )
+                                    );
                                     // Thêm chức năng chọn size nếu cần
                                   },
                                   child: Container(
@@ -252,9 +240,23 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             SizedBox(
               width: double.infinity,
               height: 50,
-              child: ElevatedButton.icon(
+              child: ElevatedButton.icon( 
                 onPressed: () {
-                  // Xử lý sự kiện khi bấm Add to Cart
+                  ref.read(cartProvider.notifier).addProductToCart(
+                    CartModel(
+                      productName: widget.productData['productName'],
+                      productPrice: widget.productData['productPrice'],
+                      categoryname: widget.productData['category'],
+                      imageUrl: widget.productData['productImage'],
+                      quantity: 1,
+                      instock: widget.productData['quantity'],
+                      productId: widget.productData['productId'],
+                      productSize: '',
+                      discount: widget.productData['discount'],
+                      description: widget.productData['description'],
+                    ),
+                  );
+
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text("Added to Cart!"),
