@@ -16,11 +16,11 @@ class HeaderWidget extends StatelessWidget {
             fit: BoxFit.cover,
           ),
           Positioned(
-            left: 48,
+            left: 30,
             top: 68,
             child: SizedBox(
-              width: 250,
-              height: 50,
+              width: MediaQuery.of(context).size.width * 0.85,
+              height: 45,
               child: TextField(
                 decoration: InputDecoration(
                   hintText: "Tìm Kiếm",
@@ -33,45 +33,11 @@ class HeaderWidget extends StatelessWidget {
                     vertical: 16,
                   ),
                   prefixIcon: Image.asset('assets/icons/searc1.png'),
-                  suffixIcon: Image.asset('assets/icons/cam.png'),
                   fillColor: Colors.grey.shade200,
                   filled: true,
                   focusColor: Colors.black,
                 ),
               ),
-            ),
-          ),
-          Positioned(
-            left: 311,
-            top: 78,
-            child: Material(
-              type: MaterialType.transparency,
-              child: InkWell(
-                onTap: () {},
-                child: Ink(
-                  width: 31,
-                  height: 31,
-                  decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage('assets/icons/bell.png'))),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            left: 354,
-            top: 78,
-            child: Material(
-              type: MaterialType.transparency,
-              child: InkWell(
-                  onTap: () {},
-                  child: Ink(
-                    width: 31,
-                    height: 31,
-                    decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage('assets/icons/message.png'))),
-                  )),
             ),
           ),
         ],
