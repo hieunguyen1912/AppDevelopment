@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tmdt_app/provider/cart_provider.dart';
@@ -166,6 +167,53 @@ class _CartScreensState extends ConsumerState<CartScreens> {
                         )
                       ],
                     ),
+                  ),
+                  ListView.builder(
+                    itemCount: cartData.length,
+                    shrinkWrap: true,
+                    physics: const ScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      final cartItem = cartData.toList()[index];
+                      return Padding(
+                        padding: EdgeInsets.all(8),
+                        child: Card(
+                          child: SizedBox(
+                            height: 200,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: 100,
+                                  width: 100,
+                                  child: Image.network(
+                                    cartItem.imageUrl[0],
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(8),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        cartItem.productName,
+                                        style: GoogleFonts.lato(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      Text(
+                                        cartItem.productPrice.toString(),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   )
                 ],
               ),
