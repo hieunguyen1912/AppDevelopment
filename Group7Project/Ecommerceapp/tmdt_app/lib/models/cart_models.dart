@@ -3,7 +3,7 @@ class CartModel {
   final String productPrice;
   final String categoryname;
   final List imageUrl;
-  final int quantity;
+  int quantity;
   final int instock;
   final String productId;
   final String productSize;

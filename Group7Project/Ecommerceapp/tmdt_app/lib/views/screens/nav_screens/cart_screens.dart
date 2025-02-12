@@ -18,6 +18,7 @@ class _CartScreensState extends ConsumerState<CartScreens> {
   @override
   Widget build(BuildContext context) {
     final cartData = ref.watch(cartProvider);
+    final _cartProvider = ref.read(cartProvider.notifier);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(
@@ -231,7 +232,10 @@ class _CartScreensState extends ConsumerState<CartScreens> {
                                             child: Row(
                                               children: [
                                                 IconButton(
-                                                  onPressed: () {},
+                                                  onPressed: () {
+                                                    _cartProvider.decrementItem(
+                                                        cartItem.productId);
+                                                  },
                                                   icon: Icon(
                                                     CupertinoIcons.minus,
                                                     color: Colors.white,
@@ -244,7 +248,10 @@ class _CartScreensState extends ConsumerState<CartScreens> {
                                                   ),
                                                 ),
                                                 IconButton(
-                                                  onPressed: () {},
+                                                  onPressed: () {
+                                                    _cartProvider.incrementItem(
+                                                        cartItem.productId);
+                                                  },
                                                   icon: Icon(
                                                     CupertinoIcons.plus,
                                                     color: Colors.white,
@@ -254,7 +261,10 @@ class _CartScreensState extends ConsumerState<CartScreens> {
                                             ),
                                           ),
                                           IconButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              _cartProvider.removeFromCart(
+                                                  cartItem.productId);
+                                            },
                                             icon: Icon(
                                               CupertinoIcons.delete,
                                             ),
@@ -274,6 +284,49 @@ class _CartScreensState extends ConsumerState<CartScreens> {
                 ],
               ),
             ),
+      bottomNavigationBar: Container(
+        width: 416,
+        height: 89,
+        clipBehavior: Clip.hardEdge,
+        decoration: const BoxDecoration(),
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                width: 416,
+                height: 86,
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                      color: Color(0xFFC4C4C4),
+                    )),
+              ),
+            ),
+            Align(
+              alignment: Alignment(-0.63, -0.26),
+              child: Text(
+                'Subtototal',
+                style: GoogleFonts.roboto(
+                  color: const Color(
+                    0xFFA1A1A1,
+                  ),
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment(
+                -0.19,
+                -0.31,
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
