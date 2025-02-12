@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/services.dart';
@@ -203,7 +204,62 @@ class _CartScreensState extends ConsumerState<CartScreens> {
                                             fontWeight: FontWeight.w600),
                                       ),
                                       Text(
+                                        cartItem.categoryname,
+                                        style: GoogleFonts.lato(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.blueGrey),
+                                      ),
+                                      Text(
                                         cartItem.productPrice.toString(),
+                                        style: GoogleFonts.lato(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.pink,
+                                        ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Container(
+                                            height: 40,
+                                            width: 120,
+                                            decoration: BoxDecoration(
+                                              color: Color(
+                                                0xFF102DE1,
+                                              ),
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                IconButton(
+                                                  onPressed: () {},
+                                                  icon: Icon(
+                                                    CupertinoIcons.minus,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  cartItem.quantity.toString(),
+                                                  style: GoogleFonts.lato(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                                IconButton(
+                                                  onPressed: () {},
+                                                  icon: Icon(
+                                                    CupertinoIcons.plus,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          IconButton(
+                                            onPressed: () {},
+                                            icon: Icon(
+                                              CupertinoIcons.delete,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
