@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tmdt_app/provider/cart_provider.dart';
@@ -19,10 +18,12 @@ class _CartScreensState extends ConsumerState<CartScreens> {
   Widget build(BuildContext context) {
     final cartData = ref.watch(cartProvider);
     final _cartProvider = ref.read(cartProvider.notifier);
+    final totalAmount = ref.watch(
+        cartProvider.notifier.select((state) => state.calculateTotalAmount()));
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(
-          MediaQuery.of(context).size.height * 20,
+          MediaQuery.of(context).size.height * 0.2,
         ),
         child: Container(
           width: MediaQuery.of(context).size.width,
@@ -68,16 +69,17 @@ class _CartScreensState extends ConsumerState<CartScreens> {
                 ),
               ),
               Positioned(
-                  left: 61,
-                  top: 51,
-                  child: Text(
-                    'My Cart',
-                    style: GoogleFonts.lato(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ))
+                left: 61,
+                top: 51,
+                child: Text(
+                  'My Cart',
+                  style: GoogleFonts.lato(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -88,7 +90,7 @@ class _CartScreensState extends ConsumerState<CartScreens> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'your shopping cart is empty you can add product to your cart from the button bellow',
+                    'Your shopping cart is empty. You can add products to your cart from the button below.',
                     textAlign: TextAlign.center,
                     style: GoogleFonts.roboto(
                       fontSize: 17,
@@ -158,7 +160,7 @@ class _CartScreensState extends ConsumerState<CartScreens> {
                           left: 69,
                           top: 14,
                           child: Text(
-                            'you have ${cartData.length} items',
+                            'You have ${cartData.length} items',
                             style: GoogleFonts.lato(
                               color: Colors.black,
                               fontSize: 16,
@@ -166,18 +168,18 @@ class _CartScreensState extends ConsumerState<CartScreens> {
                               letterSpacing: 1.7,
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
                   ListView.builder(
                     itemCount: cartData.length,
                     shrinkWrap: true,
-                    physics: const ScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
-                      final cartItem = cartData.toList()[index];
+                      final cartItem = cartData[index];
                       return Padding(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         child: Card(
                           child: SizedBox(
                             height: 200,
@@ -193,7 +195,7 @@ class _CartScreensState extends ConsumerState<CartScreens> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.all(8),
+                                  padding: const EdgeInsets.all(8),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -280,7 +282,7 @@ class _CartScreensState extends ConsumerState<CartScreens> {
                         ),
                       );
                     },
-                  )
+                  ),
                 ],
               ),
             ),
@@ -308,7 +310,7 @@ class _CartScreensState extends ConsumerState<CartScreens> {
             Align(
               alignment: Alignment(-0.63, -0.26),
               child: Text(
-                'Subtototal',
+                'Subtotal',
                 style: GoogleFonts.roboto(
                   color: const Color(
                     0xFFA1A1A1,
@@ -319,11 +321,58 @@ class _CartScreensState extends ConsumerState<CartScreens> {
               ),
             ),
             Align(
-              alignment: Alignment(
+              alignment: const Alignment(
                 -0.19,
                 -0.31,
               ),
-            )
+              child: Text(
+                totalAmount.toStringAsFixed(2),
+                style: GoogleFonts.roboto(
+                  color: Color(
+                    0xFFFF6464,
+                  ),
+                  fontSize: 24,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment(0.83, -1),
+              child: InkWell(
+                onTap: () {},
+                child: Container(
+                  width: 166,
+                  height: 71,
+                  clipBehavior: Clip.hardEdge,
+                  decoration: BoxDecoration(
+                    color: totalAmount == 0.0
+                        ? Colors.grey
+                        : Color(
+                            0xFF1532E7,
+                          ),
+                  ),
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Checkout',
+                          style: GoogleFonts.roboto(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
