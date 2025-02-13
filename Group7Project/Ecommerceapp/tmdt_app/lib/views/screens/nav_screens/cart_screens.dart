@@ -138,6 +138,14 @@ class _CartScreensState extends ConsumerState<CartScreens> {
                               color: Color(
                                 0xFFD7DDFF,
                               ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                  offset: Offset(0, 3),
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -150,9 +158,7 @@ class _CartScreensState extends ConsumerState<CartScreens> {
                             clipBehavior: Clip.hardEdge,
                             decoration: BoxDecoration(
                               color: Colors.black,
-                              borderRadius: BorderRadius.circular(
-                                5,
-                              ),
+                              borderRadius: BorderRadius.circular(5),
                             ),
                           ),
                         ),
@@ -181,6 +187,10 @@ class _CartScreensState extends ConsumerState<CartScreens> {
                       return Padding(
                         padding: const EdgeInsets.all(8),
                         child: Card(
+                          elevation: 5,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           child: SizedBox(
                             height: 200,
                             child: Row(
@@ -189,9 +199,12 @@ class _CartScreensState extends ConsumerState<CartScreens> {
                                 SizedBox(
                                   height: 100,
                                   width: 100,
-                                  child: Image.network(
-                                    cartItem.imageUrl[0],
-                                    fit: BoxFit.cover,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.network(
+                                      cartItem.imageUrl[0],
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
                                 Padding(
@@ -203,18 +216,20 @@ class _CartScreensState extends ConsumerState<CartScreens> {
                                       Text(
                                         cartItem.productName,
                                         style: GoogleFonts.lato(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
                                       Text(
                                         cartItem.categoryname,
                                         style: GoogleFonts.lato(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.blueGrey),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.blueGrey,
+                                        ),
                                       ),
                                       Text(
-                                        cartItem.productPrice.toString(),
+                                        '\$${double.parse(cartItem.productPrice).toStringAsFixed(2)}',
                                         style: GoogleFonts.lato(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
@@ -227,11 +242,13 @@ class _CartScreensState extends ConsumerState<CartScreens> {
                                             height: 40,
                                             width: 120,
                                             decoration: BoxDecoration(
-                                              color: Color(
-                                                0xFF102DE1,
-                                              ),
+                                              color: Color(0xFF102DE1),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
                                             ),
                                             child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
                                               children: [
                                                 IconButton(
                                                   onPressed: () {
@@ -269,6 +286,7 @@ class _CartScreensState extends ConsumerState<CartScreens> {
                                             },
                                             icon: Icon(
                                               CupertinoIcons.delete,
+                                              color: Colors.red,
                                             ),
                                           ),
                                         ],
@@ -287,7 +305,7 @@ class _CartScreensState extends ConsumerState<CartScreens> {
               ),
             ),
       bottomNavigationBar: Container(
-        width: 416,
+        width: double.infinity,
         height: 89,
         clipBehavior: Clip.hardEdge,
         decoration: const BoxDecoration(),
@@ -297,47 +315,52 @@ class _CartScreensState extends ConsumerState<CartScreens> {
             Align(
               alignment: Alignment.center,
               child: Container(
-                width: 416,
+                width: double.infinity,
                 height: 86,
                 clipBehavior: Clip.hardEdge,
                 decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(
-                      color: Color(0xFFC4C4C4),
-                    )),
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Color(0xFFC4C4C4),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
               ),
             ),
-            Align(
-              alignment: Alignment(-0.63, -0.26),
+            Positioned(
+              left: 20,
+              top: 20,
               child: Text(
                 'Subtotal',
                 style: GoogleFonts.roboto(
-                  color: const Color(
-                    0xFFA1A1A1,
-                  ),
+                  color: const Color(0xFFA1A1A1),
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-            Align(
-              alignment: const Alignment(
-                -0.19,
-                -0.31,
-              ),
+            Positioned(
+              left: 20,
+              top: 50,
               child: Text(
-                totalAmount.toStringAsFixed(2),
+                '\$${totalAmount.toStringAsFixed(2)}',
                 style: GoogleFonts.roboto(
-                  color: Color(
-                    0xFFFF6464,
-                  ),
+                  color: Color(0xFFFF6464),
                   fontSize: 24,
                   fontWeight: FontWeight.w500,
                 ),
               ),
             ),
-            Align(
-              alignment: Alignment(0.83, -1),
+            Positioned(
+              right: 20,
+              top: 10,
               child: InkWell(
                 onTap: () {},
                 child: Container(
@@ -345,15 +368,20 @@ class _CartScreensState extends ConsumerState<CartScreens> {
                   height: 71,
                   clipBehavior: Clip.hardEdge,
                   decoration: BoxDecoration(
-                    color: totalAmount == 0.0
-                        ? Colors.grey
-                        : Color(
-                            0xFF1532E7,
-                          ),
+                    color: totalAmount == 0.0 ? Colors.grey : Color(0xFF1532E7),
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
                   ),
                   child: Center(
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           'Checkout',
@@ -363,6 +391,7 @@ class _CartScreensState extends ConsumerState<CartScreens> {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
+                        SizedBox(width: 10),
                         Icon(
                           Icons.arrow_forward_ios,
                           color: Colors.white,
