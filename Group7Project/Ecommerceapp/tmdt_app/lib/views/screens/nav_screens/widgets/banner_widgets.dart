@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class BannerWidget extends StatefulWidget {
   const BannerWidget({super.key});
@@ -13,34 +14,53 @@ class _BannerWidgetState extends State<BannerWidget> {
     'assets/images/banner2.jpg',
     'assets/images/banner3.jpg',
   ];
-
+  
+  final PageController _pageController = PageController();
+  
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16).copyWith(bottom: 32),
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: 170,
-        decoration: BoxDecoration(
-          color: Color(0xFFF7F7F7),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              spreadRadius: 2,
-              blurRadius: 10,
-              offset: const Offset(0, 2), 
-            )
-          ]
-        ),
-        child: PageView.builder(
-          itemCount: bannerImages.length,
-          itemBuilder: (context, index) {
-            return Image.asset(
-              bannerImages[index],
-              fit: BoxFit.cover,
-            );
-          },
-        ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16).copyWith(bottom: 32),
+          child: Column(
+            children: [
+              SizedBox(
+                width: constraints.maxWidth,
+                height: 170,
+                child: PageView.builder(
+                  controller: _pageController,
+                  itemCount: bannerImages.length,
+                  itemBuilder: (context, index) {
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.asset(
+                        bannerImages[index],
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                      ),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: 8),
+              _buildIndicator(),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildIndicator() {
+    return SmoothPageIndicator(
+      controller: _pageController,
+      count: bannerImages.length,
+      effect: ExpandingDotsEffect(
+        dotHeight: 8,
+        dotWidth: 8,
+        activeDotColor: Colors.blue,
+        dotColor: Colors.grey.shade400,
       ),
     );
   }
