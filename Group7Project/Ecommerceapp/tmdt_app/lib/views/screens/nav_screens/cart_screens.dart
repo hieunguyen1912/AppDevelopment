@@ -17,364 +17,188 @@ class _CartScreensState extends ConsumerState<CartScreens> {
   @override
   Widget build(BuildContext context) {
     final cartData = ref.watch(cartProvider);
-    final _cartProvider = ref.read(cartProvider.notifier);
-    final totalAmount = ref.watch(
-        cartProvider.notifier.select((state) => state.calculateTotalAmount()));
+    final cartProviderNotifier = ref.read(cartProvider.notifier);
+    final totalAmount = cartProviderNotifier.calculateTotalAmount();
+
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(
-          MediaQuery.of(context).size.height * 0.2,
-        ),
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: 110,
-          clipBehavior: Clip.hardEdge,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(
-                'assets/icons/cartb.png',
-              ),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Stack(
-            children: [
-              Positioned(
-                left: 322,
-                top: 52,
-                child: Stack(
-                  children: [
-                    Image.asset(
-                      'assets/icons/not.png',
-                      width: 26,
-                      height: 25,
-                    ),
-                    Positioned(
-                      top: 0,
-                      right: 0,
-                      child: badges.Badge(
-                        badgeStyle: badges.BadgeStyle(
-                          badgeColor: Colors.yellow.shade900,
-                        ),
-                        badgeContent: Text(
-                          cartData.length.toString(),
-                          style: GoogleFonts.lato(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Positioned(
-                left: 61,
-                top: 51,
-                child: Text(
-                  'My Cart',
-                  style: GoogleFonts.lato(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      appBar: _buildAppBar(cartData.length),
       body: cartData.isEmpty
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Your shopping cart is empty. You can add products to your cart from the button below.',
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.roboto(
-                      fontSize: 17,
-                      letterSpacing: 1.7,
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return MainScreen();
-                      }));
-                    },
-                    child: Text(
-                      'Shop Now',
-                      style: GoogleFonts.lato(
-                        fontSize: 17,
-                        letterSpacing: 1,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            )
-          : SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 49,
-                    clipBehavior: Clip.hardEdge,
-                    decoration: const BoxDecoration(),
-                    child: Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        Positioned(
-                          left: 0,
-                          top: 0,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 49,
-                            clipBehavior: Clip.hardEdge,
-                            decoration: BoxDecoration(
-                              color: Color(
-                                0xFFD7DDFF,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 44,
-                          top: 19,
-                          child: Container(
-                            width: 10,
-                            height: 10,
-                            clipBehavior: Clip.hardEdge,
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(
-                                5,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 69,
-                          top: 14,
-                          child: Text(
-                            'You have ${cartData.length} items',
-                            style: GoogleFonts.lato(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 1.7,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  ListView.builder(
-                    itemCount: cartData.length,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      final cartItem = cartData[index];
-                      return Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: Card(
-                          child: SizedBox(
-                            height: 200,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  height: 100,
-                                  width: 100,
-                                  child: Image.network(
-                                    cartItem.imageUrl[0],
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        cartItem.productName,
-                                        style: GoogleFonts.lato(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      Text(
-                                        cartItem.categoryname,
-                                        style: GoogleFonts.lato(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.blueGrey),
-                                      ),
-                                      Text(
-                                        cartItem.productPrice.toString(),
-                                        style: GoogleFonts.lato(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.pink,
-                                        ),
-                                      ),
-                                      Row(
-                                        children: [
-                                          Container(
-                                            height: 40,
-                                            width: 120,
-                                            decoration: BoxDecoration(
-                                              color: Color(
-                                                0xFF102DE1,
-                                              ),
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                IconButton(
-                                                  onPressed: () {
-                                                    _cartProvider.decrementItem(
-                                                        cartItem.productId);
-                                                  },
-                                                  icon: Icon(
-                                                    CupertinoIcons.minus,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  cartItem.quantity.toString(),
-                                                  style: GoogleFonts.lato(
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                                IconButton(
-                                                  onPressed: () {
-                                                    _cartProvider.incrementItem(
-                                                        cartItem.productId);
-                                                  },
-                                                  icon: Icon(
-                                                    CupertinoIcons.plus,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          IconButton(
-                                            onPressed: () {
-                                              _cartProvider.removeFromCart(
-                                                  cartItem.productId);
-                                            },
-                                            icon: Icon(
-                                              CupertinoIcons.delete,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
+          ? _buildEmptyCart(context)
+          : Column(
+              children: [
+                Expanded( // ✅ Đảm bảo ListView không bị lỗi
+                  child: _buildCartList(cartData, cartProviderNotifier),
+                ),
+              ],
             ),
-      bottomNavigationBar: Container(
-        width: 416,
-        height: 89,
-        clipBehavior: Clip.hardEdge,
-        decoration: const BoxDecoration(),
-        child: Stack(
-          clipBehavior: Clip.none,
+      bottomNavigationBar: _buildBottomBar(totalAmount),
+    );
+  }
+
+  PreferredSizeWidget _buildAppBar(int cartCount) {
+    return AppBar(
+      toolbarHeight: MediaQuery.of(context).size.height * 0.1,
+      backgroundColor: const Color.fromARGB(255, 13, 13, 220),
+      centerTitle: true,
+      title: Text(
+        "My Cart",
+        style: GoogleFonts.lato(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+      ),
+      actions: [
+        Stack(
           children: [
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                width: 416,
-                height: 86,
-                clipBehavior: Clip.hardEdge,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(
-                      color: Color(0xFFC4C4C4),
-                    )),
-              ),
+            IconButton(
+              icon: const Icon(CupertinoIcons.bell, color: Colors.white),
+              onPressed: () {},
             ),
-            Align(
-              alignment: Alignment(-0.63, -0.26),
-              child: Text(
-                'Subtotal',
-                style: GoogleFonts.roboto(
-                  color: const Color(
-                    0xFFA1A1A1,
+            if (cartCount > 0)
+              Positioned(
+                right: 4,
+                top: 4,
+                child: badges.Badge(
+                  badgeStyle: badges.BadgeStyle(
+                    badgeColor: Colors.yellow.shade900,
                   ),
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Align(
-              alignment: const Alignment(
-                -0.19,
-                -0.31,
-              ),
-              child: Text(
-                totalAmount.toStringAsFixed(2),
-                style: GoogleFonts.roboto(
-                  color: Color(
-                    0xFFFF6464,
-                  ),
-                  fontSize: 24,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment(0.83, -1),
-              child: InkWell(
-                onTap: () {},
-                child: Container(
-                  width: 166,
-                  height: 71,
-                  clipBehavior: Clip.hardEdge,
-                  decoration: BoxDecoration(
-                    color: totalAmount == 0.0
-                        ? Colors.grey
-                        : Color(
-                            0xFF1532E7,
-                          ),
-                  ),
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Checkout',
-                          style: GoogleFonts.roboto(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          color: Colors.white,
-                        ),
-                      ],
+                  badgeContent: Text(
+                    cartCount.toString(),
+                    style: GoogleFonts.lato(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
               ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildEmptyCart(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Your shopping cart is empty.',
+            textAlign: TextAlign.center,
+            style: GoogleFonts.roboto(fontSize: 17, letterSpacing: 1.5),
+          ),
+          const SizedBox(height: 10),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromARGB(255, 13, 13, 220),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            ),
+            child: Text("Shop Now", style: GoogleFonts.lato(fontSize: 16, color: Colors.white)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCartList(List cartData, CartNotifier cartProviderNotifier) {
+    return ListView.builder(
+      itemCount: cartData.length,
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      itemBuilder: (context, index) {
+        final cartItem = cartData[index];
+        return _buildCartItem(cartItem, cartProviderNotifier);
+      },
+    );
+  }
+
+  Widget _buildCartItem(cartItem, CartNotifier cartProviderNotifier) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: ListTile(
+        leading: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Image.network(
+            cartItem.imageUrl[0],
+            width: 70,
+            height: 70,
+            fit: BoxFit.cover,
+          ),
+        ),
+        title: Text(
+          cartItem.productName,
+          style: GoogleFonts.lato(fontWeight: FontWeight.bold),
+        ),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              cartItem.categoryname,
+              style: GoogleFonts.lato(fontSize: 14, color: Colors.grey),
+            ),
+            Text(
+              '\$${cartItem.productPrice}',
+              style: GoogleFonts.lato(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.red),
             ),
           ],
         ),
+        trailing: _buildQuantityControls(cartItem, cartProviderNotifier),
+      ),
+    );
+  }
+
+  Widget _buildQuantityControls(cartItem, CartNotifier cartProviderNotifier) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          onPressed: () => cartProviderNotifier.decrementItem(cartItem.productId),
+          icon: const Icon(CupertinoIcons.minus_circle, color: Colors.blue),
+        ),
+        Text(cartItem.quantity.toString(), style: GoogleFonts.lato(fontSize: 16)),
+        IconButton(
+          onPressed: () => cartProviderNotifier.incrementItem(cartItem.productId),
+          icon: const Icon(CupertinoIcons.plus_circle, color: Colors.blue),
+        ),
+        IconButton(
+          onPressed: () => cartProviderNotifier.removeFromCart(cartItem.productId),
+          icon: const Icon(CupertinoIcons.trash, color: Colors.red),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBottomBar(double totalAmount) {
+    return Container(
+      height: 100,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(top: BorderSide(color: Colors.grey.shade300)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Subtotal", style: GoogleFonts.roboto(fontSize: 16, color: Colors.grey)),
+              Text(
+                "\$${totalAmount.toStringAsFixed(2)}",
+                style: GoogleFonts.roboto(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.red),
+              ),
+            ],
+          ),
+          ElevatedButton.icon(
+            onPressed: totalAmount > 0 ? () {} : null,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: totalAmount > 0 ? Colors.blue : Colors.grey,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            ),
+            icon: const Icon(Icons.shopping_cart_checkout, color: Colors.white),
+            label: Text("Checkout", style: GoogleFonts.lato(fontSize: 16, color: Colors.white)),
+          ),
+        ],
       ),
     );
   }
