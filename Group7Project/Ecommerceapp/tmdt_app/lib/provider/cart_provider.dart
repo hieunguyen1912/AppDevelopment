@@ -39,8 +39,8 @@ class CartNotifier extends StateNotifier<List<CartModel>> {
 
   double calculateTotalAmount() {
     double totalAmount = 0.0;
-    state.forEach((cartItem) {
-      totalAmount += cartItem.quantity * cartItem.discount;
+    state.forEach((CartModel) {
+      totalAmount += CartModel.quantity * CartModel.discount;
     });
     return totalAmount;
   }

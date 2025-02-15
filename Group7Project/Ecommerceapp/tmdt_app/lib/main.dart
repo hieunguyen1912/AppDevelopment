@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tmdt_app/views/screens/authentication_screens/login_screens.dart';
 import 'package:tmdt_app/views/screens/main_screens.dart';
 import 'firebase_options.dart';
 
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MainScreen(),
+      home: LoginScreen(),
     );
   }
 }
