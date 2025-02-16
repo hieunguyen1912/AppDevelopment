@@ -1,22 +1,22 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tmdt_app/models/user_model.dart';
 
 class AuthController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<String> registerNewUser(
-      String email, String fullName, String password) async {
+  Future<String> registerNewUser(UserModel user) async {
     String res = 'Email hoặc Mật Khẩu không phù hợp';
 
     try {
       UserCredential userCredential = await _auth
-          .createUserWithEmailAndPassword(email: email, password: password);
+          .createUserWithEmailAndPassword(email: user.email, password: user.password);
 
       await _firestore.collection('users').doc(userCredential.user!.uid).set({
-        'email': email,
-        'fullName': fullName,
-        'locality': '',
+        'email': user.email,
+        'fullName': user.fullName,
+        'password': user.password,
         'city': '',
         'state': '',
         'pinCode': '',
@@ -38,10 +38,10 @@ class AuthController {
     return res;
   }
 
-  Future<String> loginUser(String email, String password) async {
+  Future<String> loginUser(UserModel user) async {
     String res = 'Email hoặc Mật Khẩu không phù hợp';
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      await _auth.signInWithEmailAndPassword(email: user.email, password: user.password);
       res = 'success';
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {

@@ -4,6 +4,7 @@ import 'package:badges/badges.dart' as badges;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tmdt_app/provider/cart_provider.dart';
+import 'package:tmdt_app/views/screens/inner_screens/checkout_screen.dart';
 import 'package:tmdt_app/views/screens/main_screens.dart';
 
 class CartScreens extends ConsumerStatefulWidget {
@@ -190,7 +191,14 @@ class _CartScreensState extends ConsumerState<CartScreens> {
             ],
           ),
           ElevatedButton.icon(
-            onPressed: totalAmount > 0 ? () {} : null,
+            onPressed: totalAmount > 0 ? () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CheckoutScreen(),
+                ),
+              );
+            } : null,
             style: ElevatedButton.styleFrom(
               backgroundColor: totalAmount > 0 ? Colors.blue : Colors.grey,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),

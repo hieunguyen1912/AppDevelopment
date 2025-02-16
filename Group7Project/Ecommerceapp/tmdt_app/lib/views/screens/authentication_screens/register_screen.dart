@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tmdt_app/controllers/auth_controller.dart';
+import 'package:tmdt_app/models/user_model.dart';
 import 'package:tmdt_app/views/screens/authentication_screens/login_screens.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -25,8 +26,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
       _isLoading = true;
     });
 
+    UserModel user = UserModel(email: email, fullName: fullName, password: password);
     String res =
-        await _authController.registerNewUser(email, fullName, password);
+        await _authController.registerNewUser(user);
     if (res == 'success') {
       Navigator.pushReplacement(
         context,

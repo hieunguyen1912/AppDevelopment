@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tmdt_app/controllers/auth_controller.dart';
+import 'package:tmdt_app/models/user_model.dart';
 import 'package:tmdt_app/views/screens/authentication_screens/register_screen.dart';
 import 'package:tmdt_app/views/screens/main_screens.dart';
 
@@ -14,16 +15,14 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final AuthController _authController = AuthController();
-
   late String email;
-
   late String password;
-
   bool isLoading = false;
   bool _isObsure = true;
 
   loginUser() async {
-    String res = await _authController.loginUser(email, password);
+    UserModel user = UserModel(email: email, password: password, fullName: 'Default Name');
+    String res = await _authController.loginUser(user);
     if (res == 'success') {
       Future.delayed(Duration.zero, () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
