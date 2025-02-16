@@ -28,9 +28,9 @@ class RecommendedProductWidget extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
-              final productData = snapshot.data!.docs[index].data() as Map<String, dynamic>;
-              final product = ProductModel.fromMap(productData);
-              return ProductItemWidget(product: product,);
+              final productData = snapshot.data!.docs[index];
+
+              return ProductItemWidget(product: productData);
             }
           ),
         );

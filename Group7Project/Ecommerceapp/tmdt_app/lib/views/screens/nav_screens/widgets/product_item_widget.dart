@@ -5,7 +5,7 @@ import 'package:tmdt_app/models/product_model.dart';
 import 'package:tmdt_app/views/screens/inner_screens/product_detail_screen.dart';
 
 class ProductItemWidget extends StatelessWidget {
-  final ProductModel product;
+  final dynamic product;
 
   const ProductItemWidget({super.key, required this.product});
 
@@ -38,7 +38,6 @@ class ProductItemWidget extends StatelessWidget {
             _buildProductName(),
             _buildCategory(),
             _buildPrice(),
-            _buildRatingsAndSales(),
             _buildFavoriteButton(),
           ],
         ),
@@ -57,7 +56,7 @@ class ProductItemWidget extends StatelessWidget {
         border: Border.all(width: 0.8, color: Colors.white),
       ),
       child: Image.network(
-        product.productImage[0],
+        product['productImage'][0],
         width: 110,
         height: 110,
         fit: BoxFit.contain,
@@ -72,7 +71,7 @@ class ProductItemWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 7),
       child: Text(
-        product.productName,
+        product['productName'],
         style: GoogleFonts.lato(
           color: const Color(0xFF1E3354),
           fontSize: 14,
@@ -90,7 +89,7 @@ class ProductItemWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 7),
       child: Text(
-        product.category,
+        product['category'],
         style: GoogleFonts.lato(
           color: const Color(0xFF1E3354),
           fontSize: 12,
@@ -108,7 +107,7 @@ class ProductItemWidget extends StatelessWidget {
       child: Row(
         children: [
           Text(
-            '\$${product.discount}',
+            '\$${product['discount']}',
             style: GoogleFonts.lato(
               color: const Color(0xFF1E3354),
               fontSize: 20,
@@ -118,7 +117,7 @@ class ProductItemWidget extends StatelessWidget {
           ),
           const SizedBox(width: 5),
           Text(
-            '\$${product.productPrice}',
+            '\$${product['productPrice']}',
             style: GoogleFonts.lato(
               color: Colors.grey,
               fontSize: 16,
@@ -132,28 +131,7 @@ class ProductItemWidget extends StatelessWidget {
     );
   }
 
-  /// ⭐ Hiển thị đánh giá và số lượng bán
-  Widget _buildRatingsAndSales() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 7),
-      child: Row(
-        children: [
-          const Icon(Icons.star, color: Colors.amber, size: 14),
-          const SizedBox(width: 4),
-          Text(
-            product.rating.toString(),
-            style: GoogleFonts.lato(color: const Color(0xFF7F8E9D), fontSize: 12),
-          ),
-          const Spacer(),
-          Text(
-            '${product.sold} sold',
-            style: GoogleFonts.lato(color: const Color(0xFF7F8E9D), fontSize: 12),
-          ),
-        ],
-      ),
-    );
-  }
-
+ 
   /// ❤️ Nút yêu thích (Favorite)
   Widget _buildFavoriteButton() {
     return Positioned(
