@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tmdt_app/views/screens/authentication_screens/login_screens.dart'; // Import màn hình đăng nhập
-import 'package:tmdt_app/views/screens/inner_screens/order_screen.dart';
+import 'package:tmdt_app/views/screens/nav_screens/order_screen.dart';
 import 'package:tmdt_app/views/screens/nav_screens/cart_screens.dart'; // Import màn hình giỏ hàng
 
 class AccountScreens extends StatelessWidget {
@@ -51,17 +51,6 @@ class AccountScreens extends StatelessWidget {
               label: 'Personal Information',
               onTap: () {
                 // Add your personal information functionality here
-              },
-            ),
-            _buildAccountOption(
-              context,
-              icon: Icons.shopping_cart,
-              label: 'My Orders',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const OrderScreen()),
-                );
               },
             ),
             _buildAccountOption(

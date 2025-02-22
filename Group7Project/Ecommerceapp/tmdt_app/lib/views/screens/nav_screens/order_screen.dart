@@ -88,6 +88,7 @@ class OrderScreen extends StatelessWidget {
       backgroundColor: Colors.blue,
       centerTitle: true,
       title: Text("My Orders", style: GoogleFonts.lato(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+      automaticallyImplyLeading: false,
     );
   }
 }
