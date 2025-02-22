@@ -26,7 +26,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       _isLoading = true;
     });
 
-    UserModel user = UserModel(email: email, fullName: fullName, password: password);
+    UserModel user = UserModel(email: email, fullName: fullName, password: password, address: 'Default Address');
     String res =
         await _authController.registerNewUser(user);
     if (res == 'success') {

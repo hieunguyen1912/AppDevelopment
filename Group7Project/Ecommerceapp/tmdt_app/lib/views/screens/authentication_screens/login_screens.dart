@@ -21,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isObsure = true;
 
   loginUser() async {
-    UserModel user = UserModel(email: email, password: password, fullName: 'Default Name');
+    UserModel user = UserModel(email: email, password: password, fullName: 'Default Name', address: 'Default Address');
     String res = await _authController.loginUser(user);
     if (res == 'success') {
       Future.delayed(Duration.zero, () {

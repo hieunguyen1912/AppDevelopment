@@ -41,6 +41,7 @@ class _CartScreensState extends ConsumerState<CartScreens> {
       toolbarHeight: MediaQuery.of(context).size.height * 0.1,
       backgroundColor: const Color.fromARGB(255, 13, 13, 220),
       centerTitle: true,
+      automaticallyImplyLeading: false,
       title: Text(
         "My Cart",
         style: GoogleFonts.lato(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),

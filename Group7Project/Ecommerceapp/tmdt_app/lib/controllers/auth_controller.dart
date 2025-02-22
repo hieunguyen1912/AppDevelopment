@@ -17,9 +17,7 @@ class AuthController {
         'email': user.email,
         'fullName': user.fullName,
         'password': user.password,
-        'city': '',
-        'state': '',
-        'pinCode': '',
+        'address': user.address,
         'uid': userCredential.user!.uid,
       });
 
@@ -28,7 +26,7 @@ class AuthController {
       if (e.code == 'weak-password') {
         res = 'Mật Khẩu quá yếu.';
       } else if (e.code == 'email-already-in-use') {
-        res = 'Email đã được sử dụng.';
+        res = 'Email have already used.';
       }
     } catch (e) {
       // Handle errors here

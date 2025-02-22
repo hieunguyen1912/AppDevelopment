@@ -44,7 +44,9 @@ class CheckoutController {
         "userId": userId,
         "items": cartItems.map((item) => {
               "productId": item.productId,
+              "productImage": item.imageUrl,
               "productName": item.productName,
+              "productSize": item.productSize,
               "quantity": item.quantity,
               "price": item.productPrice * item.quantity,
             }).toList(),

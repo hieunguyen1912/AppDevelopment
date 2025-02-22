@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tmdt_app/views/screens/nav_screens/account_screen.dart';
 import 'package:tmdt_app/views/screens/nav_screens/account_screens.dart';
 import 'package:tmdt_app/views/screens/nav_screens/cart_screens.dart';
 import 'package:tmdt_app/views/screens/nav_screens/favorite_screens.dart';

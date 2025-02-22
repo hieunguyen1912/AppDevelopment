@@ -32,13 +32,62 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   }
 
   Widget _buildCartList(List<CartModel> cartData, CartNotifier cartProviderNotifier) {
-    return ListView.builder(
-      itemCount: cartData.length,
-      padding: const EdgeInsets.all(10),
-      itemBuilder: (context, index) {
-        final cartItem = cartData[index];
-        return _buildCartItem(cartItem);
-      },
+    return Column(
+      children: [
+        InkWell(
+          onTap: () {
+            
+          },
+          child: SizedBox(
+            height: 50,
+            width: double.infinity,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Icon(Icons.location_on, color: Colors.red),
+                Text("Deliver to this address", style: TextStyle(color: Colors.red)),
+              ],
+            ),
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: cartData.length,
+            padding: const EdgeInsets.all(10),
+            itemBuilder: (context, index) {
+              final cartItem = cartData[index];
+              return _buildCartItem(cartItem);
+            },
+          ),
+        ),
+
+        // Payment Method Selection
+        const Text(
+          "Choose Payment Method",
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 10),
+        ListTile(
+          title: const Text("Banking"),
+          leading: Radio(
+            value: 0,
+            groupValue: _selectedPaymentMethod,
+            onChanged: (int? value) {
+              setState(() => _selectedPaymentMethod = value!);
+            },
+          ),
+        ),
+        ListTile(
+          title: const Text("Cash on Delivery"),
+          leading: Radio(
+            value: 1,
+            groupValue: _selectedPaymentMethod,
+            onChanged: (int? value) {
+              setState(() => _selectedPaymentMethod = value!);
+            },
+          ),
+        ),
+      ],
     );
   }
 
@@ -53,7 +102,6 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
-
           // Product Card
           Container(
             padding: const EdgeInsets.all(10),
@@ -94,33 +142,6 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
           ),
 
           const SizedBox(height: 20),
-
-          // Payment Method Selection
-          const Text(
-            "Choose Payment Method",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 10),
-          ListTile(
-            title: const Text("Banking"),
-            leading: Radio(
-              value: 0,
-              groupValue: _selectedPaymentMethod,
-              onChanged: (int? value) {
-                setState(() => _selectedPaymentMethod = value!);
-              },
-            ),
-          ),
-          ListTile(
-            title: const Text("Cash on Delivery"),
-            leading: Radio(
-              value: 1,
-              groupValue: _selectedPaymentMethod,
-              onChanged: (int? value) {
-                setState(() => _selectedPaymentMethod = value!);
-              },
-            ),
-          ),
         ],
       ),
     );
