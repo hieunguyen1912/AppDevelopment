@@ -114,43 +114,89 @@ class _CartScreensState extends ConsumerState<CartScreens> {
   }
 
   Widget _buildCartItem(cartItem, CartNotifier cartProviderNotifier) {
-    return Card(
+    return Container(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: ListTile(
-        leading: ClipRRect(
-          borderRadius: BorderRadius.circular(8),
-          child: Image.network(
-            cartItem.imageUrl[0],
-            width: 70,
-            height: 70,
-            fit: BoxFit.cover,
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+      padding: const EdgeInsets.all(10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            flex: 2,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+          Text(
+            cartItem.productName,
+            style: GoogleFonts.lato(fontSize: 16, fontWeight: FontWeight.bold),
           ),
-        ),
-        title: Text(
-          cartItem.productName,
-          style: GoogleFonts.lato(fontWeight: FontWeight.bold),
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              cartItem.categoryname,
-              style: GoogleFonts.lato(fontSize: 14, color: Colors.grey),
+
+          const SizedBox(height: 5),
+
+          Text(
+            cartItem.categoryname,
+            style: GoogleFonts.lato(fontSize: 14, color: Colors.grey),
+          ),
+            
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                'Price: ',
+                style: GoogleFonts.lato(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(width: 10),
+              Text(
+                '\$${cartItem.productPrice}',
+                style: GoogleFonts.lato(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.red),
+              ),
+            ],
+          ),
+
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const Icon(Icons.star, color: Colors.orange, size: 12),
+                const Icon(Icons.star, color: Colors.orange, size: 12),
+                const Icon(Icons.star, color: Colors.orange, size: 12),
+                const Icon(Icons.star_half, color: Colors.orange, size: 12),
+                const Icon(Icons.star_border, color: Colors.orange, size: 12),
+                const SizedBox(width: 6),
+                const Text(
+            "170 Reviews",
+            style: TextStyle(color: Colors.blue, fontSize: 12),
+                ),
+              ],
             ),
-            Text(
-              '\$${cartItem.productPrice}',
-              style: GoogleFonts.lato(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.red),
+          ),
+            
+          _buildQuantityControls(cartItem, cartProviderNotifier),
+              ],
             ),
-          ],
-        ),
-        trailing: _buildQuantityControls(cartItem, cartProviderNotifier),
+          ),
+          Expanded(
+            flex: 3,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.network(
+                cartItem.imageUrl[0],               
+                fit: BoxFit.cover,
+                width: MediaQuery.of(context).size.width * 0.45,
+                height: 150,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildQuantityControls(cartItem, CartNotifier cartProviderNotifier) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         IconButton(
