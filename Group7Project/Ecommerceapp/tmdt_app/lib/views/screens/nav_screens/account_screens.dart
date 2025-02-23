@@ -4,7 +4,6 @@ import 'package:tmdt_app/views/screens/nav_screens/order_screen.dart';
 import 'package:tmdt_app/views/screens/nav_screens/cart_screens.dart'; // Import màn hình giỏ hàng
 
 class AccountScreens extends StatelessWidget {
-
   const AccountScreens({super.key});
 
   @override
@@ -44,32 +43,6 @@ class AccountScreens extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
-            _buildAccountOption(
-              context,
-              icon: Icons.person,
-              label: 'Personal Information',
-              onTap: () {
-                // Add your personal information functionality here
-              },
-            ),
-            _buildAccountOption(
-              context,
-              icon: Icons.settings,
-              label: 'Settings',
-              onTap: () {
-                // Add your settings functionality here
-              },
-            ),
-            _buildAccountOption(
-              context,
-              icon: Icons.help,
-              label: 'Help Center',
-              onTap: () {
-                // Add your help center functionality here
-              },
-            ),
-            const SizedBox(height: 16),
             ElevatedButton.icon(
               onPressed: () {
                 Navigator.pushReplacement(

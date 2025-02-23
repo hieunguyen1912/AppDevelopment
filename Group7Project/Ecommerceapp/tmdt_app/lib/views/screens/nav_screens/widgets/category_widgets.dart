@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tmdt_app/controllers/category_controller.dart';
 import 'package:tmdt_app/models/category_models.dart';
+import 'package:tmdt_app/views/screens/inner_screens/category_product_screen.dart';
 
 class CategoryList extends StatefulWidget {
   @override
@@ -10,7 +11,7 @@ class CategoryList extends StatefulWidget {
 
 class _CategoryListState extends State<CategoryList> {
   final CategoryController _categoryService = CategoryController();
-  
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<CategoryModels>>(
@@ -39,25 +40,42 @@ class _CategoryListState extends State<CategoryList> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: categories.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4, mainAxisSpacing: 4, crossAxisSpacing: 8), 
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4,
+                mainAxisSpacing: 4,
+                crossAxisSpacing: 8,
+              ),
               itemBuilder: (context, index) {
                 return InkWell(
                   onTap: () {
-
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return CategoryProductScreen(
+                        categoryModel: categories[index],
+                      );
+                    }));
                   },
                   child: Column(
                     children: [
-                      Image.network(categories[index].categoryImage, width: 40, height: 40, fit: BoxFit.cover,),
-                      Text(categories[index].categoryName, 
-                      style: GoogleFonts.quicksand(
-                        fontSize: 14,
-                        letterSpacing: 0.3,
-                        fontWeight: FontWeight.bold,
-                      ),),
+                      Image.network(
+                        categories[index].categoryImage,
+                        width: 40,
+                        height: 40,
+                        fit: BoxFit.cover,
+                      ),
+                      Text(
+                        categories[index].categoryName,
+                        style: GoogleFonts.quicksand(
+                          fontSize: 14,
+                          letterSpacing: 0.3,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ],
                   ),
                 );
-            })
+              },
+            ),
           ],
         );
       },

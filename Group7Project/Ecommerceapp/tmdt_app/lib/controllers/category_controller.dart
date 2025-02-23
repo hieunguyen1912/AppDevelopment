@@ -3,6 +3,8 @@ import 'package:tmdt_app/models/category_models.dart';
 
 class CategoryController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  static var categories;
   Future<List<CategoryModels>> fetchCategories() async {
     List<CategoryModels> categories = [];
 
