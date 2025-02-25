@@ -1,4 +1,4 @@
-# Ứng Dụng Mua Sắm (Flutter + Firebase)
+# Ứng Dụng Mua Sắm
 
 ## Tổng Quan
 
