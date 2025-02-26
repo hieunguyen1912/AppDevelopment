@@ -25,13 +25,7 @@ Thêm sản phẩm vào giỏ hàng.
 
 Cập nhật số lượng hoặc xóa sản phẩm khỏi giỏ hàng.
 
-### 4. Thanh Toán & Giao Dịch
-
-Hỗ trợ nhiều phương thức thanh toán: thẻ tín dụng/thẻ ghi nợ, ví điện tử, UPI và thanh toán khi nhận hàng (COD).
-
-Xử lý thanh toán an toàn bằng Firebase và các cổng thanh toán bên thứ ba.
-
-### 5. Quản Lý Đơn Hàng
+### 4. Quản Lý Đơn Hàng
 
 Xem lịch sử đơn hàng với ngày đặt, giá tiền và trạng thái.
 
